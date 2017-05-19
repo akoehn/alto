@@ -106,7 +106,7 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
         
     /**
      * Creates an empty MG algebra.
-     * This is an EvaluationgAlgebra, so it has a <code>signature</code>
+     * This is an EvaluatingAlgebra, so it has a <code>signature</code>
      * We also give it a grammar <code>g</code>
      */
     public MGAlgebra() {
@@ -152,14 +152,15 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
         for (int id = 1; id <= signature.getMaxSymbolId(); id++) {
             if (signature.getArity(id) == 0) {
                 String label = signature.resolveSymbolId(id);
-                try {
+//                try {
                     constantLabelInterpretations.put(id, parseString(label));
-                } catch (ParserException ex) {
-                    throw new IllegalArgumentException("Could not parse operation \"" + label + "\": " + ex.getMessage() + "when initializing constants for algebra");
-                }
+//                } catch (ParserException ex) {
+//                    throw new IllegalArgumentException("Could not parse operation \"" + label + "\": " + ex.getMessage() + "when initializing constants for algebra");
+//                }
             }
         }
     }
+        
     
 //    /**
 //     * Returns a bottom-up or a top-down decomposition automaton for the s-graph
@@ -241,45 +242,111 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
 //    
 //    
 //    
-//    @Override
-//    public Expression evaluate(String label, List<Expression> childrenValues) {
+    /**
+     * 
+     * @return 
+     */
+    @Override
+    public Expression evaluate(String label, List<Expression> childrenValues) {
+            if (label == null) {
+                return null;
+            } else if (label.equals(OP_MERGE)) {
+                 return this.g.merge(childrenValues.get(0),childrenValues.get(1));
+            }
+            else if (label.equals(OP_MOVE)) {
+                 return this.g.move(childrenValues.get(0));
+            }
+            else if (label.equals(OP_ADJOIN)) {
+                 return this.g.adjoin(childrenValues.get(0),childrenValues.get(1));
+            
+            } else { // lexical
+                return parseString(label); // turn the label into an expression
+            }
+        
+    }
+    
+    /**
+     * Checks whether "value" is a valid value. The decomposition automata
+     * will only contain rules in which the parent and all child states
+     * are valid values, as defined by this method.
+     * A valid value is one where:
+     * <ul>
+     * <li>All pairs in the expression have feature stacks that are suffixes of feature stacks in the lexicon</li>
+     * <li>The first element is not headed by a move feature</li>
+     * <li>All the other elements are headed by move feature</li>
+     * <li>All the movers are headed by features whose number correspond to the mover's index </li>
+     * </ul>
+     * @param value
+     * @return 
+     */
+    @Override
+    protected boolean isValidValue(Expression value) {
+        boolean valid = true;
+
+        if (value.headFeature().isMove()) {
+            valid = false; // expression must not be headed by a negative licesning feature
+        }
+        if (valid) { // look at head feature stack
+            boolean suf = false;
+            Lex head = value.head();
+            if (!head.isValid(g)) {
+                suf = false;
+
+            } else {
+                for (Lex li : g.getLexicon()) {
+                    if (li.getFeatures().suffix(head.getFeatures())) {
+                        suf = true;
+                        break; // if we find one LI this is a suffix of, we're okay
+                    }
+                }
+            }
+            if (!suf) { // only continue if head was valid
+                valid = false;
+
+            } else { // now look at movers
+
+                for (int i = 1; i < g.licSize() + 1; i++) {
+
+                    Lex pair = value.getExpression()[i];
+                    if (pair == null) { // empty mover slots are always valid
+                        suf = true;
+                    } else if (!pair.isValid(g)) {
+                        suf = false;
+                    } else {
+                        if (!pair.head().isMove() // not a mover
+                                || (pair.head().isMove() && pair.head().getNumber() != i)) { // or not in the right slot
+                            valid = false;
+                            break;
+                        } else {
+                            for (Lex li : g.getLexicon()) {
+                                if (li.getFeatures().suffix(pair.getFeatures())) {
+                                    suf = true;
+                                    break; // if we find one LI this is a suffix of, we're okay
+                                }
+                            }
+                        }
+                    }
+                    if (suf == false) { // if even one feature stack is invalid, the whole expression is too
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
+    /**
+     * Parses a string into an expression, using {@link MG#generateLexicalItem(java.lang.String)  }.
+     * Currently only works for correctly formatted string representing a lexical item
+     * Format: string part::=F +e +a T -u -r -e -s
+     * @param representation
+     * @return 
+     */
+    @Override
+    public Expression parseString(String representation) { //throws ParserException {
 //        try {
-//            if (label == null) {
-//                return null;
-//            } else if (label.equals(OP_MERGE)) {
-//                 return this.g.merge(childrenValues.get(0),childrenValues.get(1));
-//            }
-//            else if (label.equals(OP_MOVE)) {
-//                 return this.g.move(childrenValues.get(0));
-//            }
-//            else if (label.equals(OP_ADJOIN)) {
-//                 return this.g.adjoin(childrenValues.get(0),childrenValues.get(1));
-//            
-//            } else { // lexical
-//                return parseString(label); // turn the label into an expression
-//            }
-//        } catch (de.up.ling.irtg.codec.CodecParseException | IOException ex) {
-//            Logger.getLogger(GraphAlgebra.class.getName()).log(Level.SEVERE, null, ex);
-//            return null;
-//        }
-//    }
-//
-//    @Override
-//    protected boolean isValidValue(Expression value) {
-//        return true;
-//    }
-//
-//    /**
-//     * Parses a string into an s-graph, using {@link IsiAmrParser#parse(java.io.Reader) }.
-//     * 
-//     * @param representation
-//     * @return
-//     * @throws ParserException 
-//     */
-//    @Override
-//    public Expression parseString(String representation) throws ParserException {
-//        try {
-//            return new IsiAmrInputCodec().read(representation);
+            return new Expression(g.generateLexicalItem(representation),this.g);
 //        } catch (Throwable ex) {
 //            try {
 //                return new ExpressionInputCodec().read(representation);
@@ -287,116 +354,9 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
 //                throw new ParserException("Could not parse: "+ex.toString()+" and "+ex2.toString());
 //            }
 //        }
-//    }
-//
-//    /**
-//     * Returns a Swing component that visualizes an object of this algebra.
-//     * The graph is visualized using the <a href="http://www.jgraph.com/">JGraph</a>
-//     * graph drawing library.
-//     * 
-//     * @see TikzSgraphOutputCodec
-//     * @param graph
-//     * @return 
-//     */
-//    @Override
-//    public JComponent visualize(SGraph graph) {
-//        return SGraphDrawer.makeComponent(graph);
-//    }
-//
-////    @Override
-////    public Map<String, String> getRepresentations(SGraph object) {
-////        Map<String, String> ret = super.getRepresentations(object);
-////
-////        ret.put("ISI-style AMR", object.toIsiAmrString());
-////
-////        return ret;
-////    }
-//    
-//    
-//    /**
-//     * Computes the smatch score of the two given graphs. Uses the python implementation
-//     * from ISI ({@url http://amr.isi.edu/evaluation.html}), the python file must
-//     * be in the current working directory.
-//     * @param graph
-//     * @param gold
-//     * @return 
-//     * @throws java.io.IOException 
-//     */
-//    @OperationAnnotation(code = "smatch")
-//    public static double smatch(SGraph graph, SGraph gold) throws IOException {
-//        File temp1 = new File("TEMPFILE1");
-//        File temp2 = new File("TEMPFILE2");
-//        FileWriter writer = new FileWriter(temp1);
-//        writer.write(graph.toIsiAmrString());
-//        writer.close();
-//        writer = new FileWriter(temp2);
-//        writer.write(gold.toIsiAmrString());
-//        writer.close();
-//        
-//        Process p = Runtime.getRuntime().exec("python smatch_2.0/smatch.py -f TEMPFILE1 TEMPFILE2");
-//        
-//        // read any errors from the attempted command
-//        BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-//
-//        String s;
-//        while ((s = stdError.readLine()) != null) {
-//            System.err.println(s);
-//        }
-//            
-//        
-//        BufferedReader stdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        
-//        String outputLine = stdOutput.readLine();
-//        temp1.delete();
-//        temp2.delete();
-//        return Double.parseDouble(outputLine.substring(outputLine.length()-4));// -4 for 1 digit before comma, dot, 2 digits after comma
-//    }
-//    
-//    /**
-//     * Computes the smatch score of the two given arrays of graphs. Uses the python implementation
-//     * from ISI ({@url http://amr.isi.edu/evaluation.html}), the python file must
-//     * be in the current working directory.
-//     * @param graphs
-//     * @param gold
-//     * @return 
-//     * @throws java.io.IOException 
-//     */
-//    @OperationAnnotation(code = "globalSmatch")
-//    public static double smatch(Object[] graphs, Object[] gold) throws IOException {
-//        File temp1 = new File("TEMPFILE1");
-//        File temp2 = new File("TEMPFILE2");
-//        FileWriter writer = new FileWriter(temp1);
-//        for (Object obj : graphs) {
-//            writer.write(((SGraph)obj).toIsiAmrString()+"\n\n");
-//        }
-//        writer.close();
-//        writer = new FileWriter(temp2);
-//        for (Object obj : gold) {
-//            writer.write(((SGraph)obj).toIsiAmrString()+"\n\n");
-//        }
-//        writer.close();
-//        
-//        Process p = Runtime.getRuntime().exec("python smatch_2.0/smatch.py -f TEMPFILE1 TEMPFILE2");
-//        
-//        // read any errors from the attempted command
-//        BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-//
-//        String s;
-//        while ((s = stdError.readLine()) != null) {
-//            System.err.println(s);
-//        }
-//            
-//        
-//        BufferedReader stdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        
-//        String outputLine = stdOutput.readLine();
-//        temp1.delete();
-//        temp2.delete();
-//        return Double.parseDouble(outputLine.substring(outputLine.length()-4));// -4 for 1 digit before comma, dot, 2 digits after comma
-//    }
-//    
-//    
-//    
+    }
+
+
 //    
 //    /**
 //     * Returns the set of all source names appearing in {@code signature}.
@@ -960,20 +920,7 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
 //        writer.close();
 //    }
 
-    @Override
-    protected Expression evaluate(String label, List<Expression> childrenValues) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected boolean isValidValue(Expression value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Expression parseString(String representation) throws ParserException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+ 
+ 
     
 }
