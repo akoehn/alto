@@ -357,57 +357,7 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
     }
 
 
-//    
-//    /**
-//     * Returns the set of all source names appearing in {@code signature}.
-//     * @param signature
-//     * @return 
-//     */
-//    private static Set<String> getAllSourcesFromSignature(Signature signature) {
-//        //find all sources used in algebra:
-//        Set<String> ret = new HashSet<>();
-//        for (String symbol : signature.getSymbols())//this adds all sources from the signature, (but be careful, this is kind of a hack) should work now. Maybe better just give this a list of sources directly?
-//        {
-//            if (symbol.startsWith(GraphAlgebra.OP_FORGET)/* || symbol.startsWith(GraphAlgebra.OP_FORGET_EXCEPT)*/) {
-//                String[] parts = symbol.split("_");
-//                for (int i = 1; i<parts.length; i++) {
-//                    if (parts[i].equals("")) {
-//                        System.err.println("empty sourcename!");
-//                    } 
-//                    ret.add(parts[i]);
-//                }
-//            } else if (symbol.startsWith(GraphAlgebra.OP_RENAME) || symbol.startsWith(GraphAlgebra.OP_SWAP)) {
-//                String[] parts = symbol.split("_");
-//                if (parts.length == 2) {
-//                    ret.add("root");
-//                }
-//                for (int i = 1; i < parts.length; i++) {
-//                    if (parts[i].equals("")) {
-//                        System.err.println("empty sourcename!");
-//                    } 
-//                    ret.add(parts[i]);
-//                }
-//            } else if (symbol.startsWith(OP_COMBINEDMERGE)){
-//                String[] parts = symbol.split("_");
-//                ret.add(parts[1]);
-//                ret.add(parts[2]);
-//            } else if (signature.getArityForLabel(symbol) == 0) {
-//                String[] parts = symbol.split("<");
-//                for (int i = 1; i<parts.length; i++) {//do not want the first element in parts!
-//                    List<String> smallerParts = Arrays.asList(parts[i].split(">")[0].split(","));
-//                    if (smallerParts.contains("")) {
-//                       System.err.println("empty sourcename!");  
-//                    }
-//                    ret.addAll(smallerParts);
-//                }
-//            } /*else if (symbol.startsWith(GraphAlgebra.OP_FORGET_ALL_BUT_ROOT)) {
-//                ret.add("root");
-//            }*/
-//        }
-//        return ret;
-//    }
-//
-//    
+
 //    
 //    /**
 //     * Creates a GraphAlgebra based on {@code graph} with {@code nrSources} many
