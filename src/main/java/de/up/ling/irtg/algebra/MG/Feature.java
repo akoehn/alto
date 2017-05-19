@@ -34,7 +34,9 @@ public class Feature {
         return number;
     }
 
-    
+    public boolean isMove() {
+        return this.polarity.getSet().equals("lic") && this.polarity.getIntValue() == -1;
+    }
     
     @Override
     public String toString() {

@@ -53,13 +53,33 @@ public class FeatureList {
         return new FeatureList(fs);
 
     }
-
+    /**
+     * Deletes the top feature from the stack.
+     * @return the feature stack with the top feature removed
+     */
     public FeatureList check() {
         FeatureList checked = this.copy();
         checked.features.remove(0);
         return checked;
     }
-    
+
+    /**
+     * Checks if the given feature list is a suffix.
+     * @param suf potential suffix
+     * @return true if <code>suf</code> is a suffix
+     */
+    public boolean suffix(FeatureList suf) {
+        int len = features.size();
+        boolean result;
+        if (len < suf.getFeatures().size()) {
+            result = false;
+        } else {
+            //System.out.println(features.subList(len - suf.getFeatures().size(), len));
+            //System.out.println(suf.getFeatures());
+            result = features.subList(len - suf.getFeatures().size(), len).equals(suf.getFeatures());
+        }
+        return result;
+    }
     
     @Override
     public String toString() {

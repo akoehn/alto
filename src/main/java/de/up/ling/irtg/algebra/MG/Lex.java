@@ -51,6 +51,26 @@ public class Lex {
         return features;
     }
     
+    public Feature head() {
+        return features.getFeatures().get(0);
+    }
+    
+    /**
+     * <code>true</code> if all features are in the grammar.
+     * @param g a minimalist grammar
+     * @return <code>true</code> if all features are in the grammar.
+     */
+    public boolean isValid(MG g) {
+        boolean ret = true;
+        for (Feature f : features.getFeatures()) {
+            if (!g.getFeatures().contains(f)) {
+                ret = false;
+                break;
+            }
+        }
+        return ret;
+    }
+    
     /**
      * Delete the head feature
      */

@@ -17,13 +17,29 @@ public class Test {
         // generate MG
         MG g = Main.defaultMG();
         
-        Lex word = g.generateLexicalItem("pants::=X +f N -wh -g");
+        Lex the = g.getLexicon().get(0);
         
-        System.out.println(word);
+        FeatureList thefs = the.getFeatures();
+        FeatureList s = new FeatureList(thefs.getFeatures().subList(1, 3));
+
         
-        System.out.println(g);
+        System.out.println(the);
+        System.out.println(s);
         
-        System.out.println("hello".startsWith(""));
+        
+        System.out.println(the.getFeatures().suffix(s));
+        
+        MGAlgebra algebra = new MGAlgebra(g);
+        
+        Expression expr = new Expression(the,g);
+        
+        Expression badExpr = new Expression(new Lex("hello", new FeatureList(new Feature[] {g.getFeatures().get(2), g.getFeatures().get(7) })),g);
+        
+        System.out.println(badExpr);
+        
+       
+        System.out.println(algebra.isValidValue(badExpr));
+        
         
 //        Numeration numeration = new Numeration(g);
 //        for (int i : new Integer[] {0,3,6,9}) {
