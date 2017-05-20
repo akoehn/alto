@@ -5,9 +5,12 @@
  */
 package de.up.ling.irtg.algebra.MG;
 
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -56,8 +59,33 @@ public class MG {
         
     }
 
-    
- 
+    public MG(ArrayList<Expression> lexicon, boolean fromCodec) {
+        this(); // make an empty MG
+
+        if (fromCodec) { // if the expressions are straight from the codec, they have length 1 and all features have number -1.
+            // go through the lexicon and find all the features
+            for (Expression expr : lexicon) { // we only have one LI in the exprssion
+                for (Feature f : expr.head().getFeatures().getFeatures()) {
+                    if (!this.features.contains(f)) {
+                        this.features.add(f);
+                    }
+                    
+                    addPolarity(f.getPolarity());
+                    
+                    
+                    
+                    
+                }
+            }
+            
+            
+            
+            
+
+        }
+
+    }
+
 // gets
     
     public HashMap<String, Polarity> getLicPolarities() {
@@ -159,6 +187,12 @@ public class MG {
     private void addFeature(Feature feature) {
         //selectional features
         if (!this.features.contains(feature) && feature.getSet().equals("sel") && feature.getNumber() <= selSize() + 1) {
+            if (feature.getNumber()==-1) { // if the feature doesn't have a number yet, set it to the next available.
+                if (bareSelFeatures.contains(feature.getValue())) {
+                    
+                }
+                feature.setNumber(selSize() + 1);
+            }
             this.features.add(feature);
             if (!bareSelFeatures.contains(feature.getValue())) {
                 this.bareSelFeatures.add(feature.getValue());
@@ -356,10 +390,8 @@ public class MG {
         String[] fs = parts[1].split(" "); // split the features along spaces
         FeatureList featureList = new FeatureList();
         for (String f : fs) {
-            Polarity polarity;
-            polarity = null;
-            String name;
-            name=null;
+            Polarity polarity = null;
+            String name = null;
             for (String key : licPolarities.keySet()) {
                 if (f.startsWith(key)) {
                     polarity = licPolarities.get(key);
