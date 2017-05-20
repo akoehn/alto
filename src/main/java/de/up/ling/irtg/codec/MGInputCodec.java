@@ -15,12 +15,12 @@ import de.up.ling.irtg.algebra.MG.Polarity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
- * Input codec corresponding to the default SGraph#toString method.
- * @author groschwitz
+ * Input codec corresponding to the default Expression#toString method.
+ * Generates a unary expression from a string representation of a lexical item. 
+ * @author meaghanfowlie
  */
 public class MGInputCodec extends InputCodec<Expression>{
 
@@ -112,4 +112,6 @@ public class MGInputCodec extends InputCodec<Expression>{
         return new Lex(string, featureList); // make an LI
 
     }
+
+
 }
