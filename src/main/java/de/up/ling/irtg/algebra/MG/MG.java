@@ -671,15 +671,11 @@ public class MG {
         for (State st0 : agenda) {
 
             // try move
-            tmp = st0.move1(this);
+            tmp = st0.move(this);
             if (tmp != null) {
                 result = tmp;
-            } else {
-                tmp = st0.move2(this);
-                if (tmp != null) {
-                    result = tmp;
-                }
-            }
+            } 
+            
             // if either move worked, add result to everything.
             if (result != null) {
                 states.add(result);

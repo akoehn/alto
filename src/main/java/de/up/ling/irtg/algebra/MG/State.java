@@ -171,11 +171,15 @@ public class State {
 
             // combine selected lists
             int i = 1;
-            while (i < g.licSize() + 1) {
-                newState.addMover(i, selected.getState()[i]);
+            boolean ok = true;
+            while (i < g.licSize() + 1 && ok) {
+                ok = newState.addMover(i, selected.getState()[i]);
                 i++;
 
             }
+            if (!ok) {
+                return null;
+            } else {
             if (selected.head().isMove()) {
                 State mover = state2.copy();
                 if (newState.addMover(mover.headFeatureIndex(g), mover.getState()[0])) {
@@ -186,6 +190,7 @@ public class State {
 
             } else {
                 return newState;
+            }
             }
             
         } else {
@@ -211,8 +216,8 @@ public class State {
 //   
     
  
-    // TODO add conditionals
-    public State move1(MG g) {
+    // TODO is this right?
+    public State move(MG g) {
         // move and stop
 
         State newState = this.copy();
@@ -220,32 +225,43 @@ public class State {
 
         if (newState.getState()[i] != null) { // if there's a mover
             
+            if (this.head().licensing(g) &&  this.head().match(this.head(i))  ) {
+                           
             //check the features
-            newState.check(i);
+            FeatureList mover = newState.state[i].check();
             newState.check(0);
             newState.getState()[i] = null; // take the mover out of the list
-
+            if (mover != null) {
+                newState.addMover(mover.headFeatureIndex(g) , mover); // add back into the mover list
+            }
+            
+            } else {
+                return null; // failed b/c features not right
+            }
+            return newState;
+        } else {
+            return null;        // failed b.c no such mover
         }
         //System.out.println("move1 outputs " + newState);
-        return newState;
+        
 
     }
     
-    public State move2(MG g) {
-        // check the features
-        
-        int i = this.headFeatureIndex(g);
-        FeatureList mover = this.state[i].check(); // get the mover and check the features
-        
-        State newState = this.move1(g);
-        newState.addMover(mover.headFeatureIndex(g) , mover); // add back into the mover list
-        
-        return newState;
-        
-        
-        
-    }
-    
+//    public State move2(MG g) {
+//        // check the features
+//        
+//        int i = this.headFeatureIndex(g);
+//        FeatureList mover = this.state[i].check(); // get the mover and check the features
+//        
+//        State newState = this.move1(g);
+//        newState.addMover(mover.headFeatureIndex(g) , mover); // add back into the mover list
+//        
+//        return newState;
+//        
+//        
+//        
+//    }
+//    
     public boolean moving(int element,MG g) {
 //        System.out.println("Trying moving...");
 //        System.out.println("number: " + element);
