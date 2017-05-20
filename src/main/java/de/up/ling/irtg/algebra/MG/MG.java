@@ -186,20 +186,14 @@ public class MG {
      */
     private void addFeature(Feature feature) {
         //selectional features
-        if (!this.features.contains(feature) && feature.getSet().equals("sel") && feature.getNumber() <= selSize() + 1) {
-            if (feature.getNumber()==-1) { // if the feature doesn't have a number yet, set it to the next available.
-                if (bareSelFeatures.contains(feature.getValue())) {
-                    
-                }
-                feature.setNumber(selSize() + 1);
-            }
+        if (!this.features.contains(feature) && feature.getSet().equals("sel")) {
             this.features.add(feature);
-            if (!bareSelFeatures.contains(feature.getValue())) {
+            if (!bareSelFeatures.contains(feature.getValue())) { // add to bare features if necessary
                 this.bareSelFeatures.add(feature.getValue());
             }
             //System.out.println("sel feature added: " + feature);
             
-        } else if (!this.features.contains(feature) && feature.getSet().equals("lic") && feature.getNumber() <= licSize() + 1) { 
+        } else if (!this.features.contains(feature) && feature.getSet().equals("lic")) { 
             //licensing features
             this.features.add(feature);
             if (!bareLicFeatures.contains(feature.getValue())) {
@@ -291,24 +285,18 @@ public class MG {
         ArrayList<Feature> newfs = new ArrayList<>();
         
         // licensing features
-        int number = 1; // lic features get numbers
         for (String f : this.bareLicFeatures) {
             for (Polarity pol : this.getLicPolarities().values()) {
-                newfs.add(new Feature(pol,f,number));
+                newfs.add(new Feature(pol,f));
              
             }
-            number++;
-        }
-        
+        }       
         // selectional features
-        number = 1; // what the heck, let's give sel feaures numbers too just in case that's useful
         for (String c : this.bareSelFeatures) {
             
             for (Polarity pol : this.getSelPolarities().values()) {
-                newfs.add(new Feature(pol,c,number));
-                
+                newfs.add(new Feature(pol,c));                
             }
-            number++;
         }
         this.features = newfs;
     }
@@ -414,23 +402,18 @@ public class MG {
             }
             Feature feature = featureByValue(polarity, name); // get the feature from the grammar
             if (feature == null) { // if it's not in the grammar, add it
-                int n = -1;
                 if (polarity.getSet().equals("lic")) {
-                    n = licSize() + 1;
                     for (Polarity p : licPolarities.values()) {
-                        addFeature(new Feature(p, name, n));
+                        addFeature(new Feature(p, name));
                     }
-                    feature = new Feature(polarity, name, n);
+                    feature = new Feature(polarity, name);
                 } else {
-                    n = selSize() + 1;
                     for (Polarity p : selPolarities.values()) {
-                        addFeature(new Feature(p, name, n));
+                        addFeature(new Feature(p, name));
                     }
                 }
-                feature = new Feature(polarity, name, n);
-
+                feature = new Feature(polarity, name);
             }
-
             featureList.addFeature(feature); // add the feature to the feature list for this LI
         }
         return new Lex(string, featureList); // make an LI
@@ -519,7 +502,7 @@ public class MG {
                     expr2.head().setString("");
                 }
                 // store whereever it belongs
-                if (!result.store(expr2.head())) { // SMC violation
+                if (!result.store(expr2.head(),this)) { // SMC violation
                     return null;
                 }
     
@@ -551,7 +534,7 @@ public class MG {
         // if top feature is a poitive licensing feature
         Feature head = result.headFeature();
         if (head.getSet().equals("lic")) {
-            Integer i = head.getNumber();
+            Integer i = result.head().headFeatureIndex(this);
             Lex mover = result.getExpression()[i];
             if (mover == null) {
                 System.out.println("Move error: no matching mover");
@@ -583,7 +566,7 @@ public class MG {
                             mover.setString("");
                         }
                         
-                        if (!result.store(mover)) { //SMC violation
+                        if (!result.store(mover,this)) { //SMC violation
                             return null;
                         }
                         return result; // otherwise, we're good.
@@ -642,7 +625,7 @@ public class MG {
                     expr2.head().setString("");
                 }
                 // store whereever it belongs
-                if (!result.store(expr2.head())) { // SMC violation
+                if (!result.store(expr2.head(),this)) { // SMC violation
                     return null;
                 }
     

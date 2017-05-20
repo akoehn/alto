@@ -83,6 +83,14 @@ public class State {
         return state;
     }
     
+    public int headFeatureIndex(MG g) {
+        if (head().getSet().equals("sel")) {
+            return g.getBareSelFeatures().indexOf(head().getValue());
+        } else {
+            return g.getBareLicFeatures().indexOf(head().getValue());
+        }
+    }
+    
    public boolean isComplete(MG g) {
        boolean valid = g.getFinals().contains(this.head().getValue()) && this.state[0].getFeatures().size()==1;
        int i = 1;
@@ -172,7 +180,7 @@ public class State {
 
         //copy the selectee and add it to the mover list
         State mover = state2.copy();        
-        newState.addMover(mover.head().getNumber(), mover.getState()[0]);
+        newState.addMover(mover.headFeatureIndex(g), mover.getState()[0]);
 
         
         return newState;
@@ -184,7 +192,7 @@ public class State {
         // move and stop
 
         State newState = this.copy();
-        int i = newState.head().getNumber(); // mover #
+        int i = newState.headFeatureIndex(g); // mover #
 
         if (newState.getState()[i] != null) { // if there's a mover
             
@@ -202,11 +210,11 @@ public class State {
     public State move2(MG g) {
         // check the features
         
-        int i = this.head().getNumber();
+        int i = this.headFeatureIndex(g);
         FeatureList mover = this.state[i].check(); // get the mover and check the features
         
         State newState = this.move1(g);
-        newState.addMover(mover.getFeatures().get(0).getNumber() , mover); // add back into the mover list
+        newState.addMover(mover.headFeatureIndex(g) , mover); // add back into the mover list
         
         return newState;
         

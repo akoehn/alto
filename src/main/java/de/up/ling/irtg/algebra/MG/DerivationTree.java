@@ -172,7 +172,7 @@ public class DerivationTree {
                     // Merge 2: merge a mover
                     if (!mover.getState()[0].getFeatures().isEmpty()) {
                         // add mover
-                        newState.addMover(mover.head().getNumber(), mover.getState()[0]);
+                        newState.addMover(mover.headFeatureIndex(g) , mover.getState()[0]);
 
                     }
                     
@@ -194,7 +194,7 @@ public class DerivationTree {
                  
                 if (state1.head().licensing(g)) {
                     
-                    int i = state1.head().getNumber(); // mover #
+                    int i = state1.headFeatureIndex(g); // mover #
                     //int moverNumber = state1.moving(i, g);
                     //if (moverNumber == -1) {
                     if (state1.moving(i, g)) {
@@ -227,7 +227,7 @@ public class DerivationTree {
                     // Merge 2: merge a mover
                     if (!mover.getState()[0].getFeatures().isEmpty()) {
                         // add mover
-                        newState.addMover(mover.head().getNumber(), mover.getState()[0]);
+                        newState.addMover(mover.headFeatureIndex(g), mover.getState()[0]);
 
                     }
                     

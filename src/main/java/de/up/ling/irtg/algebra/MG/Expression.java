@@ -59,8 +59,8 @@ public class Expression  {
      * @param li
      * @return true if it worked; false if SMC violation
      */
-    public boolean store(Lex li) {
-        int i = li.getFeatures().getFeatures().get(0).getNumber();
+    public boolean store(Lex li, MG g) {
+        int i = li.headFeatureIndex(g);
         return this.store(li,i);
     }
 

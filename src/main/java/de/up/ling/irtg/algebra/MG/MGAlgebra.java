@@ -314,7 +314,7 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
                         suf = false;
                     } else {
                         if (!pair.head().isMove() // not a mover
-                                || (pair.head().isMove() && pair.head().getNumber() != i)) { // or not in the right slot
+                                || (pair.head().isMove() && pair.headFeatureIndex(g) != i)) { // or not in the right slot
                             valid = false;
                             break;
                         } else {
