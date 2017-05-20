@@ -197,13 +197,9 @@ public class DerivationTree {
                     int i = state1.headFeatureIndex(g); // mover #
                     //int moverNumber = state1.moving(i, g);
                     //if (moverNumber == -1) {
-                    if (state1.moving(i, g)) {
-                        // move and stop
-                        newState = state1.move2(g);
-                    } else {
-                        newState = state1.move1(g);
-                    }
-                                      
+
+                        newState = state1.move(g);
+           
                 }
  
                 break;
