@@ -34,6 +34,12 @@ public class Feature {
         return number;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    
+    
     public boolean isMove() {
         return this.polarity.getSet().equals("lic") && this.polarity.getIntValue() == -1;
     }
