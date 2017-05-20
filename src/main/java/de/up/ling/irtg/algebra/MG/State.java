@@ -65,6 +65,7 @@ public class State {
         
     }
     
+    
     public boolean addMover(int i, FeatureList mover) {
         if (this.state[i] == null) { // only add a selected if there's room (SMC)
             this.state[i] = mover;
@@ -79,6 +80,10 @@ public class State {
         return this.state[0].getFeatures().get(0);
     }
 
+    public Feature head(int i) {
+        return this.state[i].getFeatures().get(0);
+    }
+            
     public FeatureList[] getState() {
         return state;
     }
@@ -110,8 +115,7 @@ public class State {
         this.state[i].getFeatures().remove(0);
     }
     
-    
-   
+ 
    public State copy() {
        
        int n = this.state.length;
@@ -136,58 +140,78 @@ public class State {
 
     @Override
     public String toString() {
-       String s = "";
-       int i = 0;
-       while (i<this.state.length) {
-           s+=state[i];
-           s+=" ";
-           i++;
-       }
-       return s;
+        String s = "";
+        int i = 0;
+        while (i < this.state.length) {
+            if (state[i] == null) {
+                s += "_";
+            } else {
+                s += state[i];
+            }
+            s += " ";
+            i++;
+        }
+        return s;
     }
 
     
     
-    // these functions are for if you already know that the features match 
-    public State merge1(State state2, MG g) {
+    public State merge(State state2, MG g) {
         // merge a non-mover
-        State newState ;
+        State newState;
 
-        newState = this.copy(); 
-        State selected = state2.copy(); 
+        newState = this.copy();
+        State selected = state2.copy();
 
-        // check features
-        selected.check(0);
-        newState.check(0);
+        if (this.head().getSet().equals("sel") && this.head().match(state2.head())) {
 
-        // combine selected lists
-        int i = 1;
-        while (i < g.licSize() + 1) {
-            newState.addMover(i, selected.getState()[i]);
-            i++;
+            // check features
+            selected.check(0);
+            newState.check(0);
 
+            // combine selected lists
+            int i = 1;
+            while (i < g.licSize() + 1) {
+                newState.addMover(i, selected.getState()[i]);
+                i++;
+
+            }
+            if (selected.head().isMove()) {
+                State mover = state2.copy();
+                if (newState.addMover(mover.headFeatureIndex(g), mover.getState()[0])) {
+                    return newState;
+                } else {
+                    return null;
+                }
+
+            } else {
+                return newState;
+            }
+            
+        } else {
+            return null;
         }
 
-        return newState;
-    
     }
-   
-    public State merge2(State state2, MG g) {
-        // merge a mover
-        
-        // check the features and mege the mover lists
-        State newState = this.merge1(state2, g);
 
-        //copy the selectee and add it to the mover list
-        State mover = state2.copy();        
-        newState.addMover(mover.headFeatureIndex(g), mover.getState()[0]);
-
-        
-        return newState;
-        
-    }
-   
+//    public State merge2(State state2, MG g) {
+//        // merge a mover
+//        
+//        // check the features and mege the mover lists
+//        State newState = this.merge1(state2, g);
+//
+//        //copy the selectee and add it to the mover list
+//        State mover = state2.copy();        
+//        newState.addMover(mover.headFeatureIndex(g), mover.getState()[0]);
+//
+//        
+//        return newState;
+//        
+//    }
+//   
     
+ 
+    // TODO add conditionals
     public State move1(MG g) {
         // move and stop
 
@@ -237,6 +261,8 @@ public class State {
         }
         
     }
+    
+ 
     
     
 }

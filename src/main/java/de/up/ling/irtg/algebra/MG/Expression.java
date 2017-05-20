@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class Expression  {
     
     public Lex[] expression;
-    public boolean valid;
     
     /**
      * Class constructor.
@@ -166,14 +165,7 @@ public class Expression  {
     }
     
     
-    /**
-     * I don't think we're using this.
-     * @param valid 
-    */
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
-    
+
     /**
      * Returns just the generated string.
      * Only applies if the head feature is a category, and there are no other features.

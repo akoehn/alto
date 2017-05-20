@@ -123,10 +123,11 @@ public class CellEntry {
         
     }
     
-    public CellEntry merge1(CellEntry selectee, MG g) {
+    // TODO now we're going to need new operations that don't look at whether operation ppapplies. also i've merged merge1 and merge2 for now in State. 
+   public CellEntry merge1(CellEntry selectee, MG g) {
         State state1 = this.state;
         State state2 = selectee.getState();
-        State newState = state1.merge1(state2, g);
+        State newState = state1.merge(state2, g);
         if (newState==null) { // if merge failed
             return null;
         } else {
@@ -141,7 +142,7 @@ public class CellEntry {
     public CellEntry merge2(CellEntry selectee, MG g) {
         State state1 = this.state;
         State state2 = selectee.getState();
-        State newState = state1.merge2(state2, g);
+        State newState = state1.merge(state2, g);
         if (newState==null) { // if merge failed
             return null;
         } else {
