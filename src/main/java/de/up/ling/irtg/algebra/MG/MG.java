@@ -26,7 +26,6 @@ import java.util.Set;
 public class MG {
     
     private ArrayList<String> bareLicFeatures;
- //   private ArrayList<String> bareSelFeatures;  // we could merge this with the categories, and when we need bareSelFeatures just use keys of categories.
     private HashMap<String,Polarity> licPolarities;
     private HashMap<String,Polarity> selPolarities;
     private ArrayList<Feature> features;
@@ -42,7 +41,6 @@ public class MG {
      * Class constructor.
      */
     public MG() {
-//        this.bareSelFeatures = new ArrayList<>();
         this.bareLicFeatures = new ArrayList<>();
         this.licPolarities = new HashMap<>();
         this.selPolarities = new HashMap<>();
@@ -111,10 +109,7 @@ public class MG {
         return bareLicFeatures;
     }
 
-//    public ArrayList<String> getBareSelFeatures() {
-//        return bareSelFeatures;
-//    }
-
+    // I'm too lazy to refactor all of this.
     public ArrayList<String> getBareSelFeatures() {
         return new ArrayList<>(categories.keySet());
     }
