@@ -56,6 +56,20 @@ public class Lex {
     }
     
     /**
+     * Returns index of existing feature, or -1 if it's not in the grammar.
+     * We use this index to place the corresponding mover.
+     * @param g the MG
+     * @return index of feature
+     */
+    public int headFeatureIndex(MG g) {
+        if (head().getSet().equals("sel")) {
+            return g.getBareSelFeatures().indexOf(head().getValue());
+        } else {
+            return g.getBareLicFeatures().indexOf(head().getValue());
+        }
+    }
+
+    /**
      * <code>true</code> if all features are in the grammar.
      * @param g a minimalist grammar
      * @return <code>true</code> if all features are in the grammar.

@@ -107,8 +107,7 @@ public class MGInputCodec extends InputCodec<Expression>{
                 }
             }
  
-            // feature number is -1, since we don't have a real grammar. Feature numbers will be fixed when we generate the grammar.
-            featureList.addFeature(new Feature(polarity, name, -1)); // add the feature to the feature list for this LI
+            featureList.addFeature(new Feature(polarity, name)); // add the feature to the feature list for this LI
         }
         return new Lex(string, featureList); // make an LI
 

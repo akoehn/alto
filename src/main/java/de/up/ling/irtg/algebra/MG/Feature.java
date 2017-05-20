@@ -13,12 +13,10 @@ public class Feature {
     
     private Polarity polarity; // eg +,-,=
     private String value;    // eg wh
-    private int number;
 
-    public Feature(Polarity polarity, String value, int number) {
+    public Feature(Polarity polarity, String value) {
         this.polarity = polarity;
         this.value = value;
-        this.number = number;
         
     }
 
@@ -29,16 +27,6 @@ public class Feature {
     public String getValue() {
         return value;
     }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    
     
     public boolean isMove() {
         return this.polarity.getSet().equals("lic") && this.polarity.getIntValue() == -1;

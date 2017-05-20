@@ -81,6 +81,14 @@ public class FeatureList {
         return result;
     }
     
+    public int headFeatureIndex(MG g) {
+        if (features.get(0).getSet().equals("sel")) {
+            return g.getBareSelFeatures().indexOf(features.get(0).getValue());
+        } else {
+            return g.getBareLicFeatures().indexOf(features.get(0).getValue());
+        }
+    }
+    
     @Override
     public String toString() {
         String s = "";
