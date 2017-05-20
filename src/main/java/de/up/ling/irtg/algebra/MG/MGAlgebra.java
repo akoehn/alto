@@ -4,35 +4,15 @@
  */
 package de.up.ling.irtg.algebra.MG;
 
-import com.google.common.collect.Sets;
 import de.up.ling.irtg.algebra.EvaluatingAlgebra;
 import de.up.ling.irtg.algebra.ParserException;
-import de.up.ling.irtg.automata.TreeAutomaton;
-import de.up.ling.irtg.codec.IsiAmrInputCodec;
 import de.up.ling.irtg.codec.MGInputCodec;
-import de.up.ling.irtg.codec.TikzSgraphOutputCodec;
-import de.up.ling.irtg.codec.isiamr.IsiAmrParser;
-import de.up.ling.irtg.laboratory.OperationAnnotation;
 import de.up.ling.irtg.signature.Signature;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 
 /**
  * A Minimalist Grammar algebra. The values of this algebra are <i>expressions</i>,
@@ -94,17 +74,15 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
      * This returns the original set stored in the algebra, so it must not be modified.
      * @return
      */
-    Int2ObjectMap<Expression> getAllConstantLabelInterpretations() {
+    public Int2ObjectMap<Expression> getAllConstantLabelInterpretations() {
         if (constantLabelInterpretations == null) {
             precomputeAllConstants();
         }
         return constantLabelInterpretations;
     }
     
-    private Set<String> sources;
     
-    
-        
+           
     /**
      * Creates an empty MG algebra.
      * This is an EvaluatingAlgebra, so it has a <code>signature</code>
@@ -163,86 +141,7 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
     }
         
     
-//    /**
-//     * Returns a bottom-up or a top-down decomposition automaton for the s-graph
-//     * {@code value} (which one can be set via {@code setUseTopDownAutomaton}, 
-//     * default is bottom-up).
-//     * @param value
-//     * @return 
-//     */
-//    @Override
-//    public TreeAutomaton decompose(SGraph value) {
-//        if (useTopDownAutomaton)
-//            return decompose(value, SGraphBRDecompositionAutomatonTopDown.class);
-//        else
-//            return decompose(value, SGraphBRDecompositionAutomatonBottomUp.class);
-//    }
-//    
-//    /**
-//     * Given an SGraph, this returns the corresponding decomposition automaton of class c.
-//     * @param value
-//     * @param c
-//     * @return
-//     */
-//    public TreeAutomaton decompose(SGraph value, Class c){
-//        //try {
-//            if (c == SGraphDecompositionAutomaton.class){
-//                return new SGraphDecompositionAutomaton(value, this, getSignature());
-//                
-//            } else if (c == SGraphBRDecompositionAutomatonBottomUp.class) {
-//                return new SGraphBRDecompositionAutomatonBottomUp(value, this);
-//                
-//            } else if (c == SGraphBRDecompositionAutomatonTopDown.class) {
-//                return new SGraphBRDecompositionAutomatonTopDown(value, this);
-//            }
-//            else return null;
-//    }
-//    
-//    @OperationAnnotation(code="decompTopDown")
-//    public TreeAutomaton decomposeTopDown(SGraph value) {
-//        return decompose(value, SGraphBRDecompositionAutomatonTopDown.class);
-//    }
-//    
-//    /**
-//     * Writes (nearly) all the rules in the decomposition automaton of the
-//     * SGraph value (with respect to the signature in this algebra) into the
-//     * Writer, and does not store the rules in memory.
-//     * Iterates through the rules in bottom up order.
-//     * To avoid cycles, there are no rename operations on states only reachable
-//     * via rename. Rules of the form c-> m(a, b) and c-> m(b,a) are both written
-//     * into the writer.
-//     * @param value
-//     * @param writer
-//     * @return
-//     * @throws Exception
-//     */
-//    public boolean writeRestrictedAutomaton(SGraph value, Writer writer) throws Exception{
-//        SGraphBRDecompositionAutomatonBottomUp botupAutomaton = new SGraphBRDecompositionAutomatonBottomUp(value, this);
-//        return botupAutomaton.writeAutomatonRestricted(writer);
-//    }
-//    
-//    /**
-//     * Writes (nearly) all the rules in the decomposition automaton of the
-//     * SGraph value (with respect to the incomplete decomposition algebra)
-//     * into the Writer, and does not store the rules in memory.
-//     * Iterates through the rules in bottom up order.
-//     * To avoid cycles, there are no rename operations on states only reachable
-//     * via rename. Rules of the form c-> m(a, b) and c-> m(b,a) are both written
-//     * into the writer.
-//     * @param value
-//     * @param sourceCount
-//     * @param writer
-//     * @return
-//     * @throws Exception
-//     */
-//    public static boolean writeRestrictedDecompositionAutomaton(SGraph value, int sourceCount, Writer writer) throws Exception{
-//        GraphAlgebra alg = makeIncompleteDecompositionAlgebra(value, sourceCount);
-//        SGraphBRDecompositionAutomatonBottomUp botupAutomaton = new SGraphBRDecompositionAutomatonBottomUp(value, alg);
-//        return botupAutomaton.writeAutomatonRestricted(writer);
-//    }
-//    
-//    
-//    
+
     /**
      * Evaluates to expression
      * Not sure I'm handling errors correctly.
@@ -360,242 +259,13 @@ public class MGAlgebra extends EvaluatingAlgebra<Expression> {
         }
     }
 
+    
+    
+    
+    
 
-//    
-//    /**
-//     * Creates a GraphAlgebra based on {@code graph} with {@code nrSources} many
-//     * sources (named 1,..,nrSources).
-//     * The resulting algebra contains as constants all atomic subgraphs (single
-//     * edges, and single labled nodes), with all possible source combinations.
-//     * Further, the merge operation and all possible versions of forget and
-//     * rename. It is encouraged to use {@code makeIncompleteDecompositionAlgebra}
-//     * instead, since its result is equally expressive and smaller (due to
-//     * less spurious constants).
-//     * @param graph
-//     * @param nrSources
-//     * @throws Exception
-//     * @return
-//     */
-//    public static GraphAlgebra makeCompleteDecompositionAlgebra(SGraph graph, int nrSources) throws Exception//only add empty algebra!!
-//    {
-//        Signature sig = new Signature();
-//        Set<String> sources = new HashSet<>();
-//        for (int i = 0; i < nrSources; i++) {
-//            sources.add(String.valueOf(i));
-//        }
-//        Set<String> seenEdgeLabels = new HashSet<>();
-//        Set<String> seenNodeLabels = new HashSet<>();
-//        for (String source1 : sources) {
-//            sig.addSymbol("f_" + source1, 1);
-//            for (String vName : graph.getAllNodeNames()) {
-//                String nodeLabel = graph.getNode(vName).getLabel();
-//                if (!seenNodeLabels.contains(nodeLabel)){
-//                    seenNodeLabels.add(nodeLabel);
-//                    sig.addSymbol("(" + vName + "<" + source1 + "> / " + nodeLabel + ")", 0);
-//                }
-//            }
-//            for (String source2 : sources) {
-//                if (!source2.equals(source1)) {
-//                    sig.addSymbol("r_" + source1 + "_" + source2, 1);
-//                    sig.addSymbol("s_" + source1 + "_" + source2, 1);
-//                    for (String vName1 : graph.getAllNodeNames()) {
-//                        for (String vName2 : graph.getAllNodeNames()) {
-//                            if (!vName1.equals(vName2)) {
-//                                GraphEdge e = graph.getGraph().getEdge(graph.getNode(vName1), graph.getNode(vName2));
-//                                if (e != null) {
-//                                    String edgeLabel = e.getLabel();
-//                                    if (!seenEdgeLabels.contains(edgeLabel)){
-//                                        seenEdgeLabels.add(edgeLabel);
-//                                        sig.addSymbol("(" + vName1 + "<" + source1 + "> :" + edgeLabel + " (" + vName2 + "<" + source2 + ">))", 0);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        sig.addSymbol("merge", 2);
-//        return new GraphAlgebra(sig);
-//    }
-//
-//    /**
-//     * Creates a GraphAlgebra based on {@code graph} with {@code nrSources} many
-//     * sources (named 1,..,nrSources).
-//     * The resulting algebra contains as constants all atomic subgraphs (single
-//     * edges, and single labled nodes), but only one source is used for nodes,
-//     * and one more source for edges (both possibilities to name the vertices
-//     * incident to the edge with these two sources are included).
-//     * Further, the merge operation and all possible versions of forget and 
-//     * rename.
-//     * @param graph
-//     * @param nrSources
-//     * @throws Exception
-//     * @return
-//     */
-//    public static GraphAlgebra makeIncompleteDecompositionAlgebra(SGraph graph, int nrSources) throws Exception//only add empty algebra!!
-//    {
-//        Signature sig = new Signature();
-//        Set<String> sources = new HashSet<>();
-//        for (int i = 0; i < nrSources; i++) {
-//            sources.add(String.valueOf(i));
-//        }
-//        for (String source1 : sources) {
-//            sig.addSymbol("f_" + source1, 1);
-//            for (String source2 : sources) {
-//                if (!source2.equals(source1)) {
-//                    sig.addSymbol("r_" + source1 + "_" + source2, 1);
-//                    //sig.addSymbol("s_" + source1 + "_" + source2, 1);
-//                }
-//            }
-//        }
-//        Set<String> seenNodeLabels = new HashSet<>();
-//        for (String vName : graph.getAllNodeNames()) {
-//            String internalVName = "u";//=vName was bad, since we then have a harder time to recognize the same rules again
-//            String nodeLabel = graph.getNode(vName).getLabel();
-//            if (!seenNodeLabels.contains(nodeLabel)){
-//                seenNodeLabels.add(nodeLabel);
-//                if (nodeLabel.contains(":")) {
-//                    nodeLabel = "\""+nodeLabel+"\"";
-//                }
-//                sig.addSymbol("(" + internalVName + "<" + sources.iterator().next() + "> / " + nodeLabel + ")", 0);
-//            }
-//        }
-//        Set<String> seenEdgeLabels = new HashSet<>();
-//        for (String vName1 : graph.getAllNodeNames()) {
-//            for (String vName2 : graph.getAllNodeNames()) {
-//                String internalVName1 = "u";
-//                String internalVName2 = "v";
-//                if (!vName1.equals(vName2)) {
-//                    GraphEdge e = graph.getGraph().getEdge(graph.getNode(vName1), graph.getNode(vName2));
-//                    if (e != null) {
-//                        String edgeLabel = e.getLabel();
-//                        if (!seenEdgeLabels.contains(edgeLabel)){
-//                            seenEdgeLabels.add(edgeLabel);
-//                            Iterator<String> it = sources.iterator();
-//                            String s1 = it.next();
-//                            String s2 = it.next();
-//                            sig.addSymbol("(" + internalVName1 + "<" + s1 + "> :" + edgeLabel + " (" + internalVName2 + "<" + s2 + ">))", 0);
-//                            sig.addSymbol("(" + internalVName2 + "<" + s2 + "> :" + edgeLabel + " (" + internalVName1 + "<" + s1 + ">))", 0);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        sig.addSymbol("merge", 2);
-//        return new GraphAlgebra(sig);
-//    }
-//
-//    
-//    /**
-//     * Writes an IRTG grammar file based on {@code graph} with {@code nrSources}
-//     * many sources (named 1,..,nrSources). The resulting irtg represents a
-//     * GraphAlgebra which contains as constants all atomic subgraphs (single
-//     * edges, and single labled nodes), but only one source is used for nodes,
-//     * and one more source for edges (both possibilities to name the vertices
-//     * incident to the edge with these two sources are included).
-//     * Further, the merge operation and all possible versions of forget and rename.
-//     * The one final state is S, the one nonfinal state is X.
-//     * 
-//     * @param alg empty GraphAlgebra, carries the result.
-//     * @param graph
-//     * @param nrSources
-//     * @throws Exception
-//     */
-//    // @todo Keep this only until a more elegant solution based on
-//    // makeIncompleteDecompositionAlgebra is found.
-//    public static void writeIncompleteDecompositionIRTG(GraphAlgebra alg, SGraph graph, int nrSources, PrintWriter writer) throws Exception//only add empty algebra!!
-//    {
-//        String terminal = "S!";
-//        String nonterminal = "X";
-//        String transition = " -> ";
-//        String strGraph = "[graph] ";
-//
-//        writer.println(terminal + transition + "m( " + nonterminal + ", " + nonterminal + ")");
-//        writer.println(strGraph + "merge" + "(?1, ?2)");
-//        writer.println();
-//
-//        Signature sig = alg.getSignature();
-//        Set<String> sources = new HashSet<>();
-//        for (int i = 0; i < nrSources; i++) {
-//            sources.add(String.valueOf(i));
-//        }
-//        for (String source1 : sources) {
-//
-//            sig.addSymbol("f_" + source1, 1);
-//            writer.println(nonterminal + transition + "f" + source1 + "(" + nonterminal + ")");
-//            writer.println(strGraph + "f_" + source1 + "(?1)");
-//            writer.println();
-//
-//            for (String source2 : sources) {
-//                if (!source2.equals(source1)) {
-//                    String algString = "r_" + source1 + "_" + source2;
-//                    sig.addSymbol(algString, 1);
-//                    writer.println(nonterminal + transition + "r" + source1 + source2 + "(" + nonterminal + ")");
-//                    writer.println(strGraph + algString + "(?1)");
-//                    writer.println();
-//                    
-//                    String algString2 = "s_" + source1 + "_" + source2;
-//                    sig.addSymbol(algString2, 1);
-//                    writer.println(nonterminal + transition + "s" + source1 + source2 + "(" + nonterminal + ")");
-//                    writer.println(strGraph + algString2 + "(?1)");
-//                    writer.println();
-//                }
-//            }
-//        }
-//
-//        Set<String> seenNodeLabels = new HashSet<>();
-//        
-//        for (String vName : graph.getAllNodeNames()) {
-//            String nodeLabel = graph.getNode(vName).getLabel();
-//            if (!seenNodeLabels.contains(nodeLabel)){
-//                seenNodeLabels.add(nodeLabel);
-//                String algString = "(" + vName + "<" + sources.iterator().next() + "> / " + nodeLabel + ")";
-//                sig.addSymbol(algString, 0);
-//                writer.println(nonterminal + transition + nodeLabel + "VERTEX");
-//                writer.println(strGraph + "\"" + algString + "\"");
-//                writer.println();
-//            }
-//        }
-//
-//        Set<String> seenEdgeLabels = new HashSet<>();
-//        for (String vName1 : graph.getAllNodeNames()) {
-//            for (String vName2 : graph.getAllNodeNames()) {
-//                if (!vName1.equals(vName2)) {
-//                    GraphEdge e = graph.getGraph().getEdge(graph.getNode(vName1), graph.getNode(vName2));
-//                    if (e != null) {
-//                        String edgeLabel = e.getLabel();
-//                        if (!seenEdgeLabels.contains(edgeLabel)){
-//                            seenEdgeLabels.add(edgeLabel);
-//                            Iterator<String> it = sources.iterator();
-//                            String s1 = it.next();
-//                            String s2 = it.next();
-//
-//                            String algString = "(" + vName1 + "<" + s1 + "> :" + edgeLabel + " (" + vName2 + "<" + s2 + ">))";
-//                            sig.addSymbol(algString, 0);
-//                            writer.println(nonterminal + transition + edgeLabel + "EDGE");
-//                            writer.println(strGraph + "\"" + algString + "\"");
-//                            writer.println();
-//
-//                            algString = "(" + vName1 + "<" + s2 + "> :" + edgeLabel + " (" + vName2 + "<" + s1 + ">))";
-//                            sig.addSymbol(algString, 0);
-//                            writer.println(nonterminal + transition + edgeLabel + "EDGE2");
-//                            writer.println(strGraph + "\"" + algString + "\"");
-//                            writer.println();
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        sig.addSymbol("merge", 2);
-//
-//        writer.println(nonterminal + transition + "m( " + nonterminal + ", " + nonterminal + ")");
-//        writer.println(strGraph + "merge" + "(?1, ?2)");
-//        writer.println();
-//    }
-//    
-//    
+
+    
     private static final String testString1 = "cat::N";
     private static final String testString2 = "which::=N D -nom -wh";
     private static final String testString3 = "whom::D 0acc -wh";

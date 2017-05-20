@@ -646,5 +646,82 @@ public class MG {
     
     
     
-    
+    /**
+     * Makes a list of IRTG categories for this specific MG.
+     * That is, for this specific lexicon.
+     * @return 
+     */
+    public Set<String> makeIRTGCategories() {
+
+        Set<String> cats = new HashSet<>();
+        Set<State> states = new HashSet<>();
+        Set<State> agenda = new HashSet<>();
+        State result = null;
+        State tmp = null;
+
+        // just get the states of the lexicon. We're building a set so we'll have no duplicates.
+        for (Lex li : this.lexicon) {
+            State state = new State(li, this); // get the state
+            cats.add(state.toString()); // store as string
+            states.add(state); // store the state
+            agenda.add(state); // add the state to the agenda
+
+        }
+        // now we compute the closure of the states under the operations
+        for (State st0 : agenda) {
+
+            // try move
+            tmp = st0.move1(this);
+            if (tmp != null) {
+                result = tmp;
+            } else {
+                tmp = st0.move2(this);
+                if (tmp != null) {
+                    result = tmp;
+                }
+            }
+            // if either move worked, add result to everything.
+            if (result != null) {
+                states.add(result);
+                cats.add("move:"+result.toString());
+                agenda.add(result);
+
+            } else {
+                // reset
+                tmp = null;
+                result = null;
+
+                // try merge with everything in states
+                for (State state : states) {
+                    tmp = st0.merge(state, this);
+
+                    if (tmp != null) {
+                        result = tmp;
+                    }
+                    tmp = state.merge(st0, this);
+                    if (tmp != null) {
+                        result = tmp;
+                    }
+ 
+                    if (result != null) {
+                        states.add(result);
+                        cats.add("merge:"+result.toString());
+                        agenda.add(result);
+
+                    }
+                     // try adjoin TODO
+                
+                    
+                }
+                
+               
+                agenda.remove(st0); // we've tried everything now.
+
+            }
+
+        }
+        return cats;
+
+    }
+
 }
