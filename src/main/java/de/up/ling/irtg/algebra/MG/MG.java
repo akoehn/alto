@@ -26,15 +26,13 @@ import java.util.Set;
 public class MG {
     
     private ArrayList<String> bareLicFeatures;
-    private ArrayList<String> bareSelFeatures;
+ //   private ArrayList<String> bareSelFeatures;  // we could merge this with the categories, and when we need bareSelFeatures just use keys of categories.
     private HashMap<String,Polarity> licPolarities;
     private HashMap<String,Polarity> selPolarities;
-
-    //private ArrayList<Polarity> licPolarities;
-    //private ArrayList<Polarity> selPolarities;
     private ArrayList<Feature> features;
     private ArrayList<String> alphabet;
     private ArrayList<Lex> lexicon;
+    // these two can't be inferred from a lexicon
     private ArrayList<String> finals; // final categories
     private Map<String,Category> categories;
     
@@ -44,15 +42,14 @@ public class MG {
      * Class constructor.
      */
     public MG() {
-        this.bareSelFeatures = new ArrayList<>();
+//        this.bareSelFeatures = new ArrayList<>();
         this.bareLicFeatures = new ArrayList<>();
         this.licPolarities = new HashMap<>();
         this.selPolarities = new HashMap<>();
-        //this.licPolarities = new ArrayList<>();
-        //this.selPolarities = new ArrayList<>();
         this.features = new ArrayList<>();
         this.alphabet = new ArrayList<>();
         this.lexicon = new ArrayList<>();
+        // these two can't be inferred from a lexicon
         this.finals = new ArrayList<>();
         this.categories = new HashMap<>();
     
@@ -66,26 +63,36 @@ public class MG {
             // go through the lexicon and find all the features
             for (Expression expr : lexicon) { // we only have one LI in the exprssion
                 for (Feature f : expr.head().getFeatures().getFeatures()) {
-                    if (!this.features.contains(f)) {
-                        this.features.add(f);
-                    }
-                    
-                    addPolarity(f.getPolarity());
-                    
-                    
-                    
-                    
+                    addFeature(f); // only adds it if we don't already have it. Also adds to bare features.
+                    addPolarity(f.getPolarity()); // only adds it if we don't already have it
+ 
                 }
-            }
-            
-            
-            
-            
-
+                this.lexicon.add(expr.head()); // add it to the lexion
+                addWord(expr.head().getString()); // add it to the alphabet.
+            }            
+ 
         }
 
     }
 
+ 
+    public MG(ArrayList<Lex> lexicon) {
+        this(); // make an empty MG
+        this.lexicon = lexicon;
+
+        // go through the lexicon and find all the features
+        for (Lex li : lexicon) { // we only have one LI in the exprssion
+            for (Feature f : li.getFeatures().getFeatures()) {
+                addFeature(f); // only adds it if we don't already have it. Also adds to bare features.
+                addPolarity(f.getPolarity()); // only adds it if we don't already have it
+
+            }
+        }
+
+    }
+
+    
+    
 // gets
     
     public HashMap<String, Polarity> getLicPolarities() {
@@ -104,10 +111,14 @@ public class MG {
         return bareLicFeatures;
     }
 
-    public ArrayList<String> getBareSelFeatures() {
-        return bareSelFeatures;
-    }
+//    public ArrayList<String> getBareSelFeatures() {
+//        return bareSelFeatures;
+//    }
 
+    public ArrayList<String> getBareSelFeatures() {
+        return new ArrayList<>(categories.keySet());
+    }
+    
     public ArrayList<String> getAlphabet() {
         return alphabet;
     }
@@ -159,10 +170,15 @@ public class MG {
                 break;
             
             case "sel": 
-                if (!this.bareSelFeatures.contains(feature)) {
-                    this.bareSelFeatures.add(feature);
+                if (!this.categories.keySet().contains(feature)) {                   
                     this.categories.put(feature, new Category(feature));
                 }
+
+//            case "sel": 
+//                if (!this.bareSelFeatures.contains(feature)) {
+//                    this.bareSelFeatures.add(feature);
+//                    this.categories.put(feature, new Category(feature));
+//                }
                 //System.out.println(feature);
                 break;            
                        
@@ -185,23 +201,12 @@ public class MG {
      * @param feature Of class <code>Feature</code>
      */
     private void addFeature(Feature feature) {
-        //selectional features
-        if (!this.features.contains(feature) && feature.getSet().equals("sel")) {
-            this.features.add(feature);
-            if (!bareSelFeatures.contains(feature.getValue())) { // add to bare features if necessary
-                this.bareSelFeatures.add(feature.getValue());
-            }
-            //System.out.println("sel feature added: " + feature);
+        if (!this.features.contains(feature)) {
+            features.add(feature); // add the feature
+            addBareFeature(feature.getValue(),feature.getSet()); // add the bare feature if necessary
             
-        } else if (!this.features.contains(feature) && feature.getSet().equals("lic")) { 
-            //licensing features
-            this.features.add(feature);
-            if (!bareLicFeatures.contains(feature.getValue())) {
-                this.bareLicFeatures.add(feature.getValue());
-            }
-            //System.out.println("lic feature added: " + feature);
-
         }
+        
     }
     
     
@@ -250,7 +255,7 @@ public class MG {
      */
     public int selSize() {
         // returns number of licensing features in the grammar
-        return this.bareSelFeatures.size();
+        return this.categories.size();
     }
     
     
@@ -292,8 +297,9 @@ public class MG {
             }
         }       
         // selectional features
-        for (String c : this.bareSelFeatures) {
-            
+        //for (String c : this.bareSelFeatures) {
+        for (String c : this.categories.keySet()) {  
+        
             for (Polarity pol : this.getSelPolarities().values()) {
                 newfs.add(new Feature(pol,c));                
             }
@@ -437,10 +443,10 @@ public class MG {
     public String toString() {
         return "MG{" + "\n licPolarities = " + licPolarities.keySet() + 
                 ",\n selPolarities = " + selPolarities.keySet() + 
-                ",\n bareSelFeatures = " + bareSelFeatures + 
+                //",\n bareSelFeatures = " + bareSelFeatures + 
                 ",\n bareLicFeatures = " + bareLicFeatures + 
-                ",\n features = " + features + 
                 ",\n categories = " + categories.values() + 
+                ",\n features = " + features + 
                 ",\n final categories = " + finals + 
                 ",\n alphabet = " + alphabet +
                 ",\n lexicon = " + lexicon + "\n }";
