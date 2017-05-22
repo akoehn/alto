@@ -76,11 +76,18 @@ public class State {
     }
     
     public Feature head() {
+        if (this.state[0].getFeatures().isEmpty()) {
+            return null;
+        } else {
         // the head feature
         return this.state[0].getFeatures().get(0);
+        }
     }
 
     public Feature head(int i) {
+        if (this.state[i].getFeatures().isEmpty()) {
+            return null;
+        } 
         return this.state[i].getFeatures().get(0);
     }
             
@@ -112,7 +119,7 @@ public class State {
    
    public void check(int i) {   
        // remove the top feature of the ith element of the state
-        this.state[i].getFeatures().remove(0);
+        this.state[i].getFeatures().remove(0);       
     }
     
  
@@ -154,6 +161,35 @@ public class State {
         return s;
     }
 
+        /**
+     * Stores a mover in position <code>i</code> in the expression, if it's empty.
+     * If it's not empty it's an SMC violation.
+     * @param li the mover to be stored
+     * @param i the index of the place it goes
+     * @return true if it worked, false if SMC violation
+     */
+    public boolean store(FeatureList mover, int i) { // store in position i if it's empty
+        if (this.state[i] == null) {
+            this.state[i] = mover;
+            return true;
+        } else {
+            //System.out.println("SMC violation: feature slot " + i + " is already filled");
+            return false;
+            
+        }
+    }
+    
+    /**
+     * Stores a mover in its rightful place, if it's empty.
+     * The mover belongs at the index corresponding to the <code>number</code> of its head feature
+     * @param li
+     * @return true if it worked; false if SMC violation
+     */
+    public boolean store(FeatureList mover, MG g) {
+        int i = mover.headFeatureIndex(g);
+        return this.store(mover,i);
+    }
+
     
     
     public State merge(State state2, MG g) {
@@ -162,8 +198,12 @@ public class State {
 
         newState = this.copy();
         State selected = state2.copy();
+        
+        if (newState == null || selected == null) {
+            return null;
+        }
 
-        if (this.head().getSet().equals("sel") && this.head().match(state2.head())) {
+        if (newState.head().getSet().equals("sel") && this.head().match(selected.head())) {
 
             // check features
             selected.check(0);
@@ -177,12 +217,13 @@ public class State {
                 i++;
 
             }
-            if (!ok) {
+            if (!ok || selected.head() == null) {
                 return null;
             } else {
             if (selected.head().isMove()) {
-                State mover = state2.copy();
+                State mover = selected.copy();
                 if (newState.addMover(mover.headFeatureIndex(g), mover.getState()[0])) {
+
                     return newState;
                 } else {
                     return null;
@@ -215,20 +256,74 @@ public class State {
 //    }
 //   
     
+    
+    public State adjoin(State state2, MG g) {
+
+        // make copies
+        State newState = this.copy();
+        State adjunct = state2.copy();
+        
+        if (newState == null || adjunct == null) {
+            return null;
+        }
+        
+        // get the category of the adjunct
+        Category adjunctCat = g.getCategories().get(adjunct.head().getValue());
+        //System.out.println(adjunct);
+        
+        // if Adjoin even applies
+        if (newState.head().getSet().equals("sel") // it's a selectional feature
+                && adjunct.head().getSet().equals("sel") // adjunct head is also selectional
+                && adjunctCat.getAdjunctOf().contains(newState.head().getValue())) { // adjunct is an adjunct of newState
+            //check adjunct feature
+            adjunct.check(0);
+
+            // combine mover lists
+            int i = 1;
+            boolean ok = true;
+            while (i < g.licSize() + 1 && ok) {
+                ok = newState.addMover(i, adjunct.getState()[i]);
+                i++;
+
+            }
+            if (!ok) {
+                return null; // SMC violation
+            } else {
+
+                if (!adjunct.state[0].features.isEmpty()) { // if adjunct is moving
+                    if (!newState.addMover(adjunct.headFeatureIndex(g), adjunct.state[0])) {
+                        return null; // SMC violation
+                    }
+
+                }
+            }
+
+        } else { // if adjoin doesn't apply
+
+            return null;
+        }
+
+        return newState;
+    }
+
+
  
-    // TODO is this right?
     public State move(MG g) {
         // move and stop
 
         State newState = this.copy();
         int i = newState.headFeatureIndex(g); // mover #
+        
+        if (newState == null) {
+            return null;
+        }
 
         if (newState.getState()[i] != null) { // if there's a mover
             
-            if (this.head().licensing(g) &&  this.head().match(this.head(i))  ) {
+            if (this.head().licensing(g) &&  this.head().match(this.head(i))  ) { // if the feature are right
                            
             //check the features
-            FeatureList mover = newState.state[i].check();
+            FeatureList mover = newState.state[i].check().copy();
             newState.check(0);
             newState.getState()[i] = null; // take the mover out of the list
             if (mover != null) {
