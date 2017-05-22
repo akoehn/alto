@@ -29,7 +29,9 @@ public class Feature {
     }
     
     public boolean isMove() {
-        return this.polarity.getSet().equals("lic") && this.polarity.getIntValue() == -1;
+        
+        return  this.polarity.getSet().equals("lic") && this.polarity.getIntValue() == -1;
+        
     }
     
     @Override
@@ -56,6 +58,6 @@ public class Feature {
     public boolean match(Feature otherFeature) { // two features match if they have the same barefeature and their integer values sum to 0, because one is -1 and the other is +1
         return (this.polarity.getIntValue()==1  // this is a positive feature
                 && this.value.equals(otherFeature.value)  // the features are the same
-                && this.getIntValue() + otherFeature.getIntValue() == 0) ; // the polarities are opposite
+                && otherFeature.getIntValue() == -1) ; // the polarities are opposite
     }
 }

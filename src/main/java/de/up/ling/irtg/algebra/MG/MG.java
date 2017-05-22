@@ -651,73 +651,109 @@ public class MG {
      * That is, for this specific lexicon.
      * @return 
      */
-    public Set<String> makeIRTGCategories() {
+    public Set<String> makeIRTGRules() {
 
-        Set<String> cats = new HashSet<>();
-        Set<State> states = new HashSet<>();
-        Set<State> agenda = new HashSet<>();
-        State result = null;
-        State tmp = null;
+        Set<String> irtgRules = new HashSet<>();
+        Set<State> sel = new HashSet<>(); // for selectors
+        Set<State> cat = new HashSet<>(); // for categories
+        Set<State> mv = new HashSet<>(); // when move will apply
+        State result; // to store the result of an operation
 
         // just get the states of the lexicon. We're building a set so we'll have no duplicates.
         for (Lex li : this.lexicon) {
             State state = new State(li, this); // get the state
-            cats.add(state.toString()); // store as string
-            states.add(state); // store the state
-            agenda.add(state); // add the state to the agenda
+            irtgRules.add(state.toString() + " -> " + li.toString()); // add lexical rule to IRTG rules
 
+            if (state.head().selectional(this)) {
+                if (state.head().getPolarity().getIntValue() == 1) {
+                    sel.add(state);
+                } else {
+                    cat.add(state);
+                }
+            }
         }
+
         // now we compute the closure of the states under the operations
-        for (State st0 : agenda) {
+        boolean changed = true; // if we added anything to a set
+        Set<State> newStuff = new HashSet<>();
 
+        while (changed) {
+            // reset
+            changed = false;
+            newStuff.clear();
             // try move
-            tmp = st0.move(this);
-            if (tmp != null) {
-                result = tmp;
-            } 
-            
-            // if either move worked, add result to everything.
-            if (result != null) {
-                states.add(result);
-                cats.add("move:"+result.toString());
-                agenda.add(result);
+            for (State st0 : mv) {
+                result = st0.move(this);
+                if (result != null) {
+                    
+                    if (irtgRules.add("mv:" + result + " -> " + st0.toString())) {
+                        newStuff.add(result);
+                    }
+                }
+                mv.remove(st0); // remove from movers
+            }
+            // try merge
 
-            } else {
+            for (State st0 : sel) {
                 // reset
-                tmp = null;
                 result = null;
 
                 // try merge with everything in states
-                for (State state : states) {
-                    tmp = st0.merge(state, this);
+                for (State state : cat) {
+                    result = st0.merge(state, this);
 
-                    if (tmp != null) {
-                        result = tmp;
+                    if (result != null) { // if merge worked
+                        
+                        if (irtgRules.add("mg:" + result + " -> " + st0.toString() + "," + state.toString())) {
+                            newStuff.add(result);
+                        }
                     }
-                    tmp = state.merge(st0, this);
-                    if (tmp != null) {
-                        result = tmp;
-                    }
- 
-                    if (result != null) {
-                        states.add(result);
-                        cats.add("merge:"+result.toString());
-                        agenda.add(result);
 
-                    }
-                     // try adjoin TODO
-                
-                    
                 }
-                
+
+                for (State st : cat) {
+                    for (State state : cat) {
+                        //adjoin -- could work both ways.
+                        result = st.adjoin(state, this);
+                        if (result != null) {
+                            
+                            if (irtgRules.add("adj:" + result + " -> " + st.toString() + "," + state.toString())) {
+                                newStuff.add(result);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            for (State s : newStuff) {
+                changed = true; // if there's something here, we changed the list.
+                // add to the right set of states to continue
+                if (s.head().selectional(this)) {
+                    if (s.head().getPolarity().getIntValue() == 1) {
+                        System.out.println("adding to sel: " + s);
+                        sel.add(s);
+
+                    } else {
+                        System.out.println("adding to cat: " + s);
+                        cat.add(s);
+
+                    }
+                } else {
+                    if (s.head().getPolarity().getIntValue() == 1) {
+                        System.out.println("adding to mv: " + s);
+                        mv.add(s);
+
+                    }
+                }
                
-                agenda.remove(st0); // we've tried everything now.
 
             }
-
         }
-        return cats;
+
+        return irtgRules;
 
     }
+
 
 }

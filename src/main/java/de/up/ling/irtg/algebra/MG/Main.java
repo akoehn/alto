@@ -417,6 +417,7 @@ public class Main {
         
         List<String> sel = Arrays.asList("N", "D", "V","T","C","A","P");
         
+        
         for (String f : sel) {
             g.addBareFeature(f,"sel");
         }
@@ -456,27 +457,27 @@ public class Main {
         
         
                
-        g.addLexicalItem("the", new Integer[] {7,8,4}); // -nom
-        g.addLexicalItem("the", new Integer[] {7,8}); 
-        g.addLexicalItem("which", new Integer[] {7,8,0}); // -wh
+        g.addLexicalItem("the", new Integer[] {19,12,4}); // -nom
+        g.addLexicalItem("the", new Integer[] {19,12}); 
+        g.addLexicalItem("which", new Integer[] {19,12,1}); // -wh
         
 
-        g.addLexicalItem("cat", new Integer[] {6});
-        g.addLexicalItem("dog", new Integer[] {6});
-        g.addLexicalItem("saw", new Integer[] {9,9,10});
-        g.addLexicalItem("slept", new Integer[] {9,10});
-        g.addLexicalItem("who", new Integer[] {8,0});
-        g.addLexicalItem("who", new Integer[] {8,4,0});
+        g.addLexicalItem("cat", new Integer[] {18});
+        g.addLexicalItem("dog", new Integer[] {18});
+        g.addLexicalItem("saw", new Integer[] {13,13,16});
+        g.addLexicalItem("slept", new Integer[] {13,16});
+        g.addLexicalItem("who", new Integer[] {12,1});
+        g.addLexicalItem("who", new Integer[] {12,5,1});
 
-        g.addLexicalItem("", new Integer[] {11,5,12}); // T
-        g.addLexicalItem("", new Integer[] {13,1,14}); // C
-        g.addLexicalItem("which", new Integer[] {7,8,4,0}); // -wh
+        g.addLexicalItem("", new Integer[] {17,4,14}); // T
+        g.addLexicalItem("", new Integer[] {15,0,10}); // C
+        g.addLexicalItem("which", new Integer[] {19,12,5,1}); // -wh
         
-        g.addLexicalItem("happy", new Integer[] {16});
-        g.addLexicalItem("blue", new Integer[] {16});
-        g.addLexicalItem("with", new Integer[] {9,18});
-        g.addLexicalItem("on", new Integer[] {9,18});
-        g.addLexicalItem("happy", new Integer[] {16,2});
+        g.addLexicalItem("happy", new Integer[] {8});
+        g.addLexicalItem("blue", new Integer[] {8});
+        g.addLexicalItem("with", new Integer[] {13,6});
+        g.addLexicalItem("on", new Integer[] {13,6});
+        g.addLexicalItem("happy", new Integer[] {8,3});
 
   
         
