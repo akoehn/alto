@@ -13,16 +13,19 @@ import java.util.Set;
  */
 public class Test {
     
-    private Numeration numeration; 
+    //private Numeration numeration; 
     
     public static void main(String[] args) {
         // generate MG
         MG g = Main.defaultMG();
-        
+        System.out.println("");
+               
         Set<String> cats = g.makeIRTGRules();
         for (String cat : cats) {
             System.out.println(cat);
         }
+        
+        g.printIRTG();
         
 //        
 //        FeatureList thefs = the.getFeatures();

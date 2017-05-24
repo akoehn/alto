@@ -5,6 +5,10 @@
  */
 package de.up.ling.irtg.algebra.MG;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -647,16 +651,17 @@ public class MG {
     
     
     /**
-     * Makes a list of IRTG categories for this specific MG.
-     * That is, for this specific lexicon.
-     * @return 
+     * Makes a list of IRTG categories for this specific MG. That is, for this
+     * specific lexicon.
+     *
+     * @return
      */
     public Set<String> makeIRTGRules() {
 
         Set<String> irtgRules = new HashSet<>();
-        Set<State> sel = new HashSet<>(); // for selectors
-        Set<State> cat = new HashSet<>(); // for categories
-        Set<State> mv = new HashSet<>(); // when move will apply
+        StateSet sel = new StateSet(); // for selectors
+        StateSet cat = new StateSet(); // for categories
+        StateSet mv = new StateSet(); // when move will apply
         State result; // to store the result of an operation
 
         // just get the states of the lexicon. We're building a set so we'll have no duplicates.
@@ -681,79 +686,155 @@ public class MG {
             // reset
             changed = false;
             newStuff.clear();
+            System.out.println("sel: " + sel.getStates());
+            System.out.println("cat: " + cat.getStates());
+            System.out.println("mv: " + mv.getStates());
             // try move
-            for (State st0 : mv) {
+            for (State st0 : mv.getStates()) {
                 result = st0.move(this);
+                //System.out.println("move result " + result);
                 if (result != null) {
-                    
-                    if (irtgRules.add("mv:" + result + " -> " + st0.toString())) {
-                        newStuff.add(result);
+
+                    if (result.isComplete(this)) { // start category
+                        //System.out.println("**Start!**");
+                        if (irtgRules.add("mv:" + result + "! -> " + st0.toString())) {
+                            newStuff.add(result);
+                        }
+                    } else {
+                        if (irtgRules.add("mv:" + result + " -> " + st0.toString())) {
+                            newStuff.add(result);
+                        }
                     }
                 }
-                mv.remove(st0); // remove from movers
+
             }
+            // empty mv
+            mv = new StateSet();
             // try merge
 
-            for (State st0 : sel) {
+            for (State st0 : sel.getStates()) {
                 // reset
                 result = null;
 
                 // try merge with everything in states
-                for (State state : cat) {
+                for (State state : cat.getStates()) {
+                    //System.out.println("trying to merge " + st0 + state);
+
                     result = st0.merge(state, this);
 
                     if (result != null) { // if merge worked
-                        
-                        if (irtgRules.add("mg:" + result + " -> " + st0.toString() + "," + state.toString())) {
-                            newStuff.add(result);
-                        }
-                    }
-
-                }
-
-                for (State st : cat) {
-                    for (State state : cat) {
-                        //adjoin -- could work both ways.
-                        result = st.adjoin(state, this);
-                        if (result != null) {
-                            
-                            if (irtgRules.add("adj:" + result + " -> " + st.toString() + "," + state.toString())) {
+                        if (result.isComplete(this)) { // start category
+                            //System.out.println("**Start!**");
+                            if (irtgRules.add("mg:" + result + "! -> " + st0.toString() + "," + state.toString())) {
+                                //System.out.println("merged: " + result);
+                                //System.out.println("added to new: " + 
                                 newStuff.add(result);
+                            } 
+                        } else {
+
+                                if (irtgRules.add("mg:" + result + " -> " + st0.toString() + "," + state.toString())) {
+                                    //System.out.println("merged: " + result);
+                                    //System.out.println("added to new: " + 
+                                    newStuff.add(result);
+                                }
                             }
                         }
 
                     }
+                }
+            
+
+            for (State st : cat.getStates()) {
+                for (State state : cat.getStates()) {
+                    //adjoin 
+                    result = st.adjoin(state, this);
+                    if (result != null) {
+                        if (result.isComplete(this)) { // start category
+                            //System.out.println("**Start!**");
+
+                            if (irtgRules.add("adj:" + result + "! -> " + st.toString() + "," + state.toString())) {
+                                newStuff.add(result);
+                            }
+                        } else {
+
+                            if (irtgRules.add("adj:" + result + " -> " + st.toString() + "," + state.toString())) {
+                                newStuff.add(result);
+                            }
+
+                        }
+                    }
 
                 }
             }
+            // add new stuff to appropriate sets
             for (State s : newStuff) {
                 changed = true; // if there's something here, we changed the list.
                 // add to the right set of states to continue
                 if (s.head().selectional(this)) {
                     if (s.head().getPolarity().getIntValue() == 1) {
-                        System.out.println("adding to sel: " + s);
+                        //System.out.println("adding to sel: " + s);
                         sel.add(s);
 
                     } else {
-                        System.out.println("adding to cat: " + s);
+                        //System.out.println("adding to cat: " + s);
                         cat.add(s);
 
                     }
                 } else {
                     if (s.head().getPolarity().getIntValue() == 1) {
-                        System.out.println("adding to mv: " + s);
+                        //System.out.println("adding to mv: " + s);
                         mv.add(s);
 
                     }
                 }
-               
 
             }
-        }
 
+        }
         return irtgRules;
 
     }
 
+    public void printIRTG() {
+        Set<String> irtg = makeIRTGRules();
+        try {
+            File file = new File("mg1.irtg");
+            FileWriter writer = new FileWriter(file);
+            PrintWriter pw = new PrintWriter(writer);
+            pw.println("interpretation expr: de.up.ling.irtg.algebra.graph.MGAlgebra\n");
 
+            for (String rule : irtg) {
+                writer.write(rule + "\n");
+                writer.write("[expr]\t");
+
+                if (rule.startsWith("mg:")) {
+                    pw.println("merge(?1, ?2)");
+                } else if (rule.startsWith("mv:")) {
+                    pw.println("merge(?1)");
+                } else if (rule.startsWith("adj:")) {
+                    pw.println("adjoin(?1, ?2)");
+
+                } else { // lexical
+
+                    String[] parts = rule.split("-> ");
+                    pw.print(parts[1]);
+                }
+                pw.println("");
+                pw.println("");
+
+            }
+            writer.flush();
+            writer.close();
+            System.out.printf("File is located at %s%n", file.getAbsolutePath());
+            
+        } catch (IOException e) {
+            System.out.println(e);
+
+        }
+            
+
+    }
+
+
+    
 }

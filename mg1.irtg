@@ -1,0 +1,773 @@
+interpretation expr: de.up.ling.irtg.algebra.graph.MGAlgebra
+
+mg:[+nom T ] [] [-foc ] [-nom ]  -> [=V +nom T ] [] [] [] ,[V ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -nom -wh ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[D -wh ] [] [] []  -> who::D -wh 
+[expr]	who::D -wh 
+
+mg:[=D V ] [] [] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -wh ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [] [-foc ] [-nom ]  -> [=N D ] [] [] [] ,[N ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [] [-nom ]  -> [=D V ] [] [] [] ,[D -nom ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [] [-nom ]  -> [=D P ] [] [] [] ,[D ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [] []  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [] [-foc ] [-nom -wh ]  -> [=V +nom T ] [] [] [] ,[V ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [-wh ] [-foc ] []  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [] [] [-nom -wh ]  -> [=V +nom T ] [] [] [] ,[V ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] []  -> [=D P ] [] [] [] ,[D ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mv:[C ] [] [-foc ] []  -> [+wh C ] [-wh ] [-foc ] [] 
+[expr]	merge(?1)
+
+
+mg:[V ] [-wh ] [] [-nom -wh ]  -> [=D V ] [] [] [] ,[D ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [] [-nom ]  -> [N ] [] [] [] ,[P ] [] [] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -nom -wh ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [] [-foc ] [-nom -wh ]  -> [=N D -nom ] [] [] [] ,[N ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [-foc ] []  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [-foc ] [-nom ]  -> [V ] [] [] [] ,[P ] [-wh ] [-foc ] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] [-nom ]  -> [=D =D V ] [] [] [] ,[D -nom ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [-foc ] [-nom ]  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [] []  -> [=D P ] [] [] [] ,[D ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mv:[T ] [] [-foc ] []  -> [+nom T ] [] [-foc ] [-nom ] 
+[expr]	merge(?1)
+
+
+[=D V ] [] [] []  -> slept::=D V 
+[expr]	slept::=D V 
+
+mg:[V ] [-wh ] [-foc ] []  -> [=D V ] [] [] [] ,[D -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[=V +nom T ] [] [] []  -> ::=V +nom T 
+[expr]	::=V +nom T 
+
+mg:[P ] [-wh ] [-foc ] [-nom -wh ]  -> [=D P ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [-wh ] [-foc ] [-nom -wh ]  -> [N ] [] [] [] ,[P ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D ] [] [] [-nom ]  -> [=N D ] [] [] [] ,[N ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [-wh ] [] [-nom ]  -> [N ] [] [] [] ,[P ] [-wh ] [] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom -wh ] [-wh ] [] [-nom ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] []  -> [=D V ] [] [] [] ,[D ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mv:[T ] [-wh ] [] []  -> [+nom T ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1)
+
+
+mg:[D -wh ] [] [-foc ] [-nom -wh ]  -> [=N D -wh ] [] [] [] ,[N ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [] [] [-nom -wh ]  -> [=N D -nom ] [] [] [] ,[N ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+[N ] [] [] []  -> dog::N 
+[expr]	dog::N 
+
+mg:[+nom T ] [-wh ] [] [-nom -wh ]  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [] [-foc ] [-nom -wh ]  -> [V ] [] [] [] ,[P ] [] [-foc ] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[P ] [] [-foc ] [-nom ]  -> [=D P ] [] [] [] ,[D -nom ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [] []  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [] [] [-nom ]  -> [=N D -wh ] [] [] [] ,[N ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+[=D P ] [] [] []  -> with::=D P 
+[expr]	with::=D P 
+
+mv:[T ] [-wh ] [] []  -> [+nom T ] [-wh ] [] [-nom ] 
+[expr]	merge(?1)
+
+
+mg:[V ] [-wh ] [] []  -> [=D V ] [] [] [] ,[D -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -nom -wh ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[=D P ] [] [] []  -> on::=D P 
+[expr]	on::=D P 
+
+mv:[T ] [-wh ] [-foc ] []  -> [+nom T ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1)
+
+
+mg:[D ] [] [-foc ] []  -> [=N D ] [] [] [] ,[N ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[D -nom -wh ] [] [] []  -> who::D -nom -wh 
+[expr]	who::D -nom -wh 
+
+mg:[=D V ] [-wh ] [] [-nom ]  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+[A -foc ] [] [] []  -> happy::A -foc 
+[expr]	happy::A -foc 
+
+mv:[T ] [-wh ] [-foc ] []  -> [+nom T ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1)
+
+
+mg:[D -nom ] [] [] []  -> [=N D -nom ] [] [] [] ,[N ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [] [-nom ]  -> [V ] [] [] [] ,[P ] [-wh ] [] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom -wh ] [-wh ] [-foc ] [-nom -wh ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [-foc ] [-nom -wh ]  -> [V ] [] [] [] ,[P ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+adj:[N ] [] [-foc ] []  -> [N ] [] [] [] ,[P ] [] [-foc ] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom ] [] [] [-nom ]  -> [=N D -nom ] [] [] [] ,[N ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [] [] [-nom ]  -> [V ] [] [] [] ,[P ] [] [] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] [-nom ]  -> [=D =D V ] [] [] [] ,[D -wh ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D V ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [-wh ] [-foc ] []  -> [N ] [] [] [] ,[P ] [-wh ] [-foc ] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[V ] [] [] [-nom -wh ]  -> [=D V ] [] [] [] ,[D ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [-foc ] [-nom ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [] [-nom ]  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [] [-nom -wh ]  -> [=D P ] [] [] [] ,[D ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [] []  -> [V ] [] [] [] ,[P ] [-wh ] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [-foc ] []  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[N ] [] [] []  -> cat::N 
+[expr]	cat::N 
+
+mg:[V ] [] [] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -nom -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [] [] [-nom ]  -> [=V +nom T ] [] [] [] ,[V ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] [-nom ]  -> [=D P ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mv:[T ] [-wh ] [] []  -> [+nom T ] [] [] [-nom -wh ] 
+[expr]	merge(?1)
+
+
+mg:[P ] [] [] [-nom ]  -> [=D P ] [] [] [] ,[D -nom ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [] [-foc ] [-nom -wh ]  -> [=N D ] [] [] [] ,[N ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -nom -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [-foc ] [-nom ]  -> [=D P ] [] [] [] ,[D ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [] [] [-nom -wh ]  -> [V ] [] [] [] ,[P ] [] [] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -wh ] [] [-foc ] []  -> [=N D -wh ] [] [] [] ,[N ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [] [] []  -> [V ] [] [] [] ,[P ] [] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [] [-foc ] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -nom -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [] []  -> [=D V ] [] [] [] ,[D ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [-wh ] [] [-nom -wh ]  -> [=N D ] [] [] [] ,[N ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] [-nom ]  -> [=D P ] [] [] [] ,[D -nom ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [-foc ] [-nom ]  -> [=D V ] [] [] [] ,[D -nom ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] []  -> [=D P ] [] [] [] ,[D -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mv:[T ] [] [] [] ! -> [+nom T ] [] [] [-nom ] 
+[expr]	merge(?1)
+
+
+mg:[D -wh ] [] [-foc ] [-nom ]  -> [=N D -wh ] [] [] [] ,[N ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [-foc ] [-nom -wh ]  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [] [-nom ]  -> [=D V ] [] [] [] ,[D ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [] [-foc ] []  -> [=V +nom T ] [] [] [] ,[V ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [-foc ] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] [-nom ]  -> [=D P ] [] [] [] ,[D -wh ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [-foc ] [-nom -wh ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+[=N D -nom ] [] [] []  -> the::=N D -nom 
+[expr]	the::=N D -nom 
+
+adj:[V ] [] [-foc ] []  -> [V ] [] [] [] ,[P ] [] [-foc ] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D ] [-wh ] [-foc ] [-nom ]  -> [=N D ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -wh ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+wh C ] [-wh ] [] []  -> [=T +wh C ] [] [] [] ,[T ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [] [] [-nom -wh ]  -> [=N D -wh ] [] [] [] ,[N ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [] []  -> [N ] [] [] [] ,[P ] [] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom -wh ] [-wh ] [] []  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [-foc ] []  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [] [] []  -> [=N D ] [] [] [] ,[N ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom ]  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [] [-nom -wh ]  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [-wh ] [-foc ] [-nom ]  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -nom -wh ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [] [-nom -wh ]  -> [V ] [] [] [] ,[P ] [-wh ] [] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D ] [-wh ] [] [-nom ]  -> [=N D ] [] [] [] ,[N ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [] [] [-nom -wh ]  -> [=N D ] [] [] [] ,[N ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] [-nom ]  -> [=D P ] [] [] [] ,[D -nom ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [-wh ] [-foc ] [-nom ]  -> [=N D -nom ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mv:[T ] [-wh ] [-foc ] []  -> [+nom T ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1)
+
+
+adj:[N ] [-wh ] [] [-nom -wh ]  -> [N ] [] [] [] ,[P ] [-wh ] [] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom ] [] [-foc ] [-nom ]  -> [=N D -nom ] [] [] [] ,[N ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] []  -> [=D =D V ] [] [] [] ,[D -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [] []  -> [=D V ] [] [] [] ,[D ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [] [-nom ]  -> [=D =D V ] [] [] [] ,[D ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [-wh ] [] []  -> [N ] [] [] [] ,[P ] [-wh ] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] []  -> [=D P ] [] [] [] ,[D -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[A ] [] [] []  -> happy::A 
+[expr]	happy::A 
+
+adj:[N ] [] [] []  -> [N ] [] [] [] ,[A ] [] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+[=N D ] [] [] []  -> the::=N D 
+[expr]	the::=N D 
+
+[=T +wh C ] [] [] []  -> ::=T +wh C 
+[expr]	::=T +wh C 
+
+mg:[P ] [] [-foc ] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -nom -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] []  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] []  -> [=D P ] [] [] [] ,[D ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+[A ] [] [] []  -> blue::A 
+[expr]	blue::A 
+
+mg:[D -nom -wh ] [-wh ] [-foc ] [-nom ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [] [-nom ]  -> [=D =D V ] [] [] [] ,[D -nom ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [-foc ] [-nom -wh ]  -> [=D P ] [] [] [] ,[D ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [-wh ] [-foc ] [-nom -wh ]  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [-foc ] []  -> [=D =D V ] [] [] [] ,[D ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [] [-nom ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+wh C ] [] [-foc ] []  -> [=T +wh C ] [] [] [] ,[T ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [] []  -> [N ] [] [] [] ,[C ] [] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[V ] [-wh ] [] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -nom -wh ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [-wh ] [-foc ] []  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom ] [] [-foc ] []  -> [=N D -nom ] [] [] [] ,[N ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [-foc ] [-nom ]  -> [=D =D V ] [] [] [] ,[D ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -wh ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [-foc ] [-nom -wh ]  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] []  -> [=D =D V ] [] [] [] ,[D -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [] [-nom -wh ]  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [-wh ] [] [-nom ]  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [-foc ] [-nom ]  -> [N ] [] [] [] ,[P ] [] [-foc ] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+adj:[N ] [] [] [-nom -wh ]  -> [N ] [] [] [] ,[P ] [] [] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [] [-nom -wh ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [-foc ] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -wh ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [-wh ] [-foc ] []  -> [=N D ] [] [] [] ,[N ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [-foc ] [-nom -wh ]  -> [=D V ] [] [] [] ,[D ] [] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -wh ] [] [] []  -> [=N D -wh ] [] [] [] ,[N ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [-wh ] [-foc ] [-nom ]  -> [N ] [] [] [] ,[P ] [-wh ] [-foc ] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[V ] [] [-foc ] []  -> [=D V ] [] [] [] ,[D ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D ] [-wh ] [-foc ] [-nom -wh ]  -> [=N D ] [] [] [] ,[N ] [-wh ] [-foc ] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [] [-nom ]  -> [=D V ] [] [] [] ,[D -wh ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [-foc ] []  -> [N ] [] [] [] ,[A -foc ] [] [] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[+nom T ] [-wh ] [] []  -> [=V +nom T ] [] [] [] ,[V ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [] [-foc ] []  -> [=D P ] [] [] [] ,[D ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [-wh ] [] [-nom -wh ]  -> [=N D -nom -wh ] [] [] [] ,[N ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [-foc ] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -nom -wh ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+nom T ] [] [] []  -> [=V +nom T ] [] [] [] ,[V ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [] [-foc ] [-nom ]  -> [V ] [] [] [] ,[P ] [] [-foc ] [-nom ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[=D V ] [] [] [-nom -wh ]  -> [=D =D V ] [] [] [] ,[D -nom -wh ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mv:[C ] [] [] [] ! -> [+wh C ] [-wh ] [] [] 
+[expr]	merge(?1)
+
+
+mg:[P ] [-wh ] [] [-nom ]  -> [=D P ] [] [] [] ,[D -wh ] [] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+[=N D -nom -wh ] [] [] []  -> which::=N D -nom -wh 
+[expr]	which::=N D -nom -wh 
+
+mg:[V ] [-wh ] [] [-nom ]  -> [=D V ] [] [] [] ,[D ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+wh C ] [] [] []  -> [=T +wh C ] [] [] [] ,[T ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] [-nom ]  -> [=D P ] [] [] [] ,[D ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [] [-foc ] [-nom ]  -> [=D V ] [] [] [] ,[D ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -wh ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[+wh C ] [-wh ] [-foc ] []  -> [=T +wh C ] [] [] [] ,[T ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [-foc ] []  -> [N ] [] [] [] ,[C ] [] [-foc ] [] 
+[expr]	adjoin(?1, ?2)
+
+
+[=N D -wh ] [] [] []  -> which::=N D -wh 
+[expr]	which::=N D -wh 
+
+mg:[P ] [-wh ] [] [-nom -wh ]  -> [=D P ] [] [] [] ,[D -nom -wh ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [] [-nom ]  -> [=D V ] [] [] [] ,[D -nom ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [] []  -> [=D =D V ] [] [] [] ,[D ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+[=D =D V ] [] [] []  -> saw::=D =D V 
+[expr]	saw::=D =D V 
+
+mg:[=D V ] [] [-foc ] [-nom ]  -> [=D =D V ] [] [] [] ,[D -nom ] [] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom ]  -> [=D V ] [] [] [] ,[D ] [-wh ] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+adj:[N ] [] [-foc ] [-nom -wh ]  -> [N ] [] [] [] ,[P ] [] [-foc ] [-nom -wh ] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D ] [-wh ] [] []  -> [=N D ] [] [] [] ,[N ] [-wh ] [] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [] [-nom -wh ]  -> [=D V ] [] [] [] ,[D -wh ] [] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[P ] [-wh ] [] [-nom -wh ]  -> [=D P ] [] [] [] ,[D ] [-wh ] [] [-nom -wh ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom ]  -> [=D V ] [] [] [] ,[D -wh ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom ]  -> [=D =D V ] [] [] [] ,[D -wh ] [] [-foc ] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[D -nom -wh ] [] [] []  -> [=N D -nom -wh ] [] [] [] ,[N ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
+adj:[V ] [-wh ] [-foc ] []  -> [V ] [] [] [] ,[P ] [-wh ] [-foc ] [] 
+[expr]	adjoin(?1, ?2)
+
+
+mg:[D -wh ] [-wh ] [] [-nom ]  -> [=N D -wh ] [] [] [] ,[N ] [-wh ] [] [-nom ] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [-wh ] [-foc ] [-nom ]  -> [=D =D V ] [] [] [] ,[D -nom ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[V ] [-wh ] [-foc ] [-nom ]  -> [=D V ] [] [] [] ,[D -nom ] [-wh ] [-foc ] [] 
+[expr]	merge(?1, ?2)
+
+
+mg:[=D V ] [] [] []  -> [=D =D V ] [] [] [] ,[D ] [] [] [] 
+[expr]	merge(?1, ?2)
+
+
