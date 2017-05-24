@@ -59,7 +59,7 @@ public class Expression  {
      * @return true if it worked; false if SMC violation
      */
     public boolean store(Lex li, MG g) {
-        int i = li.headFeatureIndex(g);
+        int i = li.headFeatureIndex(g) +1;
         return this.store(li,i);
     }
 

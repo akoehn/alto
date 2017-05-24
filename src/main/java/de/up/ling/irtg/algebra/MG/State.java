@@ -107,7 +107,7 @@ public class State {
        boolean valid = g.getFinals().contains(this.head().getValue()) && this.state[0].getFeatures().size()==1;
        int i = 1;
        while (i < g.licSize()+1) {
-           if (this.state != null) {
+           if (this.state[i] != null) {
                return false;
            }
            i++;
@@ -144,6 +144,30 @@ public class State {
        return cp;
 
    } 
+    public boolean equals(State st2) {
+        int n = this.state.length;
+        //System.out.println(n);
+        if (n != st2.state.length) {
+            return false;
+        }
+        int i = 0;
+        while (i < n) {
+           //System.out.println(i);
+            //System.out.println(state[i]);
+            if (this.state[i] == null && st2.state[i] == null){
+                i++;
+            } else if 
+                 (this.state[i] == null || st2.state[i] == null) {
+                    return false;
+                } else if (!this.state[i].equals(st2.state[i])) { 
+                    return false;
+            } else {
+                i++;
+            }
+        }
+        return true;
+
+    }
 
     @Override
     public String toString() {
@@ -151,9 +175,9 @@ public class State {
         int i = 0;
         while (i < this.state.length) {
             if (state[i] == null) {
-                s += "_";
+                s += "[]";
             } else {
-                s += state[i];
+                s += "[" + state[i] + "]";
             }
             s += " ";
             i++;
@@ -186,19 +210,18 @@ public class State {
      * @return true if it worked; false if SMC violation
      */
     public boolean store(FeatureList mover, MG g) {
-        int i = mover.headFeatureIndex(g);
+        int i = mover.headFeatureIndex(g) +1;
         return this.store(mover,i);
     }
 
     
-    
-    public State merge(State state2, MG g) {
+     public State merge(State state2, MG g) {
         // merge a non-mover
         State newState;
 
         newState = this.copy();
         State selected = state2.copy();
-        
+
         if (newState == null || selected == null) {
             return null;
         }
@@ -217,26 +240,31 @@ public class State {
                 i++;
 
             }
-            if (!ok || selected.head() == null) {
+            if (!ok) { // SMC violation
                 return null;
             } else {
-            if (selected.head().isMove()) {
-                State mover = selected.copy();
-                if (newState.addMover(mover.headFeatureIndex(g), mover.getState()[0])) {
-
+                if (selected.head() == null) { // merge 1
+                    //System.out.println("merge 1 gets you " + newState);
                     return newState;
                 } else {
-                    return null;
-                }
 
-            } else {
-                return newState;
+                    if (selected.head().isMove()) {
+                        State mover = selected.copy();
+                        if (newState.addMover(mover.headFeatureIndex(g) +1, mover.getState()[0])) {
+                            //System.out.println("merge 2 gets you " + newState);
+                            return newState;
+                        } else {
+                            return null;
+                        }
+
+                    }
+                }
             }
-            }
-            
-        } else {
-            return null;
-        }
+
+        } 
+
+            return null; // merge doesn't apply
+        
 
     }
 
@@ -291,7 +319,7 @@ public class State {
             } else {
 
                 if (!adjunct.state[0].features.isEmpty()) { // if adjunct is moving
-                    if (!newState.addMover(adjunct.headFeatureIndex(g), adjunct.state[0])) {
+                    if (!newState.addMover(adjunct.headFeatureIndex(g) + 1, adjunct.state[0])) {
                         return null; // SMC violation
                     }
 
@@ -302,7 +330,7 @@ public class State {
 
             return null;
         }
-
+        //System.out.println("adjoin gets you " + newState);
         return newState;
     }
 
@@ -312,36 +340,40 @@ public class State {
         // move and stop
 
         State newState = this.copy();
-        int i = newState.headFeatureIndex(g); // mover #
-        
+        int i = newState.headFeatureIndex(g) +1; // mover #
+
         if (newState == null) {
             return null;
         }
 
         if (newState.getState()[i] != null) { // if there's a mover
-            
-            if (this.head().licensing(g) &&  this.head().match(this.head(i))  ) { // if the feature are right
-                           
-            //check the features
-            FeatureList mover = newState.state[i].check().copy();
-            newState.check(0);
-            newState.getState()[i] = null; // take the mover out of the list
-            if (mover != null) {
-                newState.addMover(mover.headFeatureIndex(g) , mover); // add back into the mover list
-            }
-            
-            } else {
-                return null; // failed b/c features not right
-            }
-            return newState;
-        } else {
-            return null;        // failed b.c no such mover
-        }
-        //System.out.println("move1 outputs " + newState);
-        
 
+            if (this.head().licensing(g) && this.head().match(this.head(i))) { // if the feature are right
+
+                //check the features
+                
+                newState.check(0);
+                newState.check(i);
+                FeatureList mover = newState.state[i].copy();
+                newState.getState()[i] = null; // take the mover out of the list
+                if (!mover.features.isEmpty()) {
+                    System.out.println("state: " + newState);
+                    System.out.println("adding back in " + mover);
+                    System.out.println("at index " + (mover.headFeatureIndex(g) +1));
+                    System.out.println(newState.addMover(mover.headFeatureIndex(g) +1, mover)); // add back into the mover list
+                    System.out.println("resulting in " + newState);
+                }
+                //System.out.println("applying move");
+                return newState;
+            } else {
+                return null;        // failed b.c no such mover
+            }
+            //System.out.println("move1 outputs " + newState);
+            
+        }
+        return null;
     }
-    
+
 //    public State move2(MG g) {
 //        // check the features
 //        

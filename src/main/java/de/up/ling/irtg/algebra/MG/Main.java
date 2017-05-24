@@ -453,11 +453,11 @@ public class Main {
 //        Feature catD= g.getFeatures().get(8);
 //        
         
-        //g.printFeatures();
+        g.printFeatures();
         
         
                
-        g.addLexicalItem("the", new Integer[] {19,12,4}); // -nom
+        g.addLexicalItem("the", new Integer[] {19,12,5}); // -nom
         g.addLexicalItem("the", new Integer[] {19,12}); 
         g.addLexicalItem("which", new Integer[] {19,12,1}); // -wh
         
@@ -485,7 +485,7 @@ public class Main {
         // user interface
         
         // show lexicon
-        //g.printLexicon();
+        g.printLexicon();
         
         // let's add everyting to a numeration as expressions
         //List<Expression> numeration = new ArrayList<>();

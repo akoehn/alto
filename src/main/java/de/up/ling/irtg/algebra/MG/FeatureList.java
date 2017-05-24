@@ -53,6 +53,36 @@ public class FeatureList {
         return new FeatureList(fs);
 
     }
+    
+    public int size() {
+        if (this.features == null) {
+            return 0;
+        } else {
+            return this.features.size();
+        }
+        
+    }
+    
+    public boolean equals(FeatureList fs2) {
+        if (this == null || fs2 == null) {
+            if (fs2==null && this == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+       if (this.size() != fs2.size()) {
+           return false;
+       }
+        for (int i = 0; i < this.features.size(); i++) {
+            if (this.features.get(i) != fs2.getFeatures().get(i)) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+    
     /**
      * Deletes the top feature from the stack.
      * @return the feature stack with the top feature removed
@@ -82,6 +112,9 @@ public class FeatureList {
     }
     
     public int headFeatureIndex(MG g) {
+        if (features.isEmpty()) {
+            return -1;
+        }
         if (features.get(0).getSet().equals("sel")) {
             return g.getBareSelFeatures().indexOf(features.get(0).getValue());
         } else {
@@ -95,7 +128,7 @@ public class FeatureList {
         for (Feature f : this.features) {
             s = s + f + " " ;
         }
-        return s.substring(0,s.length()-1);
+        return s.substring(0,s.length());
     }
     
     
